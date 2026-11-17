@@ -1,5 +1,6 @@
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { cacheLife, cacheTag } from "next/cache";
 
 export type MenuItem = {
   href: string;
@@ -38,6 +39,9 @@ export type SiteContent = {
 const contentPath = path.join(process.cwd(), "content", "site.json");
 
 export async function getSiteContent(): Promise<SiteContent> {
+  "use cache";
+  cacheLife("max");
+  cacheTag("site-content");
   const raw = await readFile(contentPath, "utf8");
   return JSON.parse(raw) as SiteContent;
 }

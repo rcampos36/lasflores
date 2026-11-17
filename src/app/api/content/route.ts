@@ -1,3 +1,4 @@
+import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 import {
   getSiteContent,
@@ -17,5 +18,6 @@ export async function PUT(request: Request) {
   }
 
   await saveSiteContent(body);
+  revalidateTag("site-content", "max");
   return NextResponse.json({ ok: true });
 }

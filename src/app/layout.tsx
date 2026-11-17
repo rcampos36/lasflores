@@ -16,6 +16,7 @@ const anton = Anton({
 });
 
 export async function generateMetadata(): Promise<Metadata> {
+  "use cache";
   const content = await getSiteContent();
   return {
     title: content.brand.title,
