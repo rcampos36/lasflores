@@ -1,4 +1,9 @@
+"use client";
+
+import { LanguageToggle } from "@/components/language-toggle";
+import { useLocale } from "@/components/locale-provider";
 import type { MenuItem } from "@/lib/content";
+import { menuLabel } from "@/lib/i18n";
 
 type SiteMenuProps = {
   items: MenuItem[];
@@ -20,25 +25,30 @@ export function MenuArrow() {
 }
 
 export function SiteMenu({ items }: SiteMenuProps) {
+  const { locale, copy } = useLocale();
+
   return (
-    <nav aria-label="Principal">
-      <ul className="flex w-full flex-wrap items-center gap-x-8 gap-y-3 lg:justify-between">
-        {items.map((item) => (
-          <li key={item.href}>
-            <a
-              href={item.href}
-              className="site-menu-link inline-flex items-center text-[0.95rem] font-medium tracking-[-0.015em] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0a0a0c] lg:text-[clamp(0.85rem,0.95vw,1rem)]"
-            >
-              <span className="site-menu-dot-slot" aria-hidden>
-                <span className="site-menu-dot bg-[#3858E9]">
-                  <MenuArrow />
+    <div className="flex w-full flex-wrap items-center justify-between gap-x-6 gap-y-3">
+      <nav aria-label={copy.menuAria} className="min-w-0 flex-1">
+        <ul className="flex w-full flex-wrap items-center gap-x-8 gap-y-3 lg:justify-between">
+          {items.map((item) => (
+            <li key={item.href}>
+              <a
+                href={item.href}
+                className="site-menu-link inline-flex items-center text-[0.95rem] font-medium tracking-[-0.015em] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0a0a0c] lg:text-[clamp(0.85rem,0.95vw,1rem)]"
+              >
+                <span className="site-menu-dot-slot" aria-hidden>
+                  <span className="site-menu-dot bg-[#3858E9]">
+                    <MenuArrow />
+                  </span>
                 </span>
-              </span>
-              {item.label}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
+                {menuLabel(item, locale)}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <LanguageToggle className="shrink-0" />
+    </div>
   );
 }

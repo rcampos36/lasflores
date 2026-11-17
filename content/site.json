@@ -7,23 +7,27 @@
   },
   "menu": [
     {
-      "href": "#projets",
-      "label": "Projets",
+      "href": "#proyectos",
+      "label": "Proyectos",
+      "labelEn": "Projects",
       "color": "#e19269"
     },
     {
-      "href": "#expertises",
-      "label": "Expertises",
+      "href": "#especialidades",
+      "label": "Especialidades",
+      "labelEn": "Expertise",
       "color": "#7d877c"
     },
     {
-      "href": "#agence",
-      "label": "Agence",
+      "href": "#agencia",
+      "label": "Agencia",
+      "labelEn": "Agency",
       "color": "#b1939d"
     },
     {
-      "href": "#contact",
-      "label": "Contact",
+      "href": "#contacto",
+      "label": "Contacto",
+      "labelEn": "Contact",
       "color": "#c5cdd0"
     }
   ],

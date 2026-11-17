@@ -38,7 +38,7 @@ const bootSplashScript = `
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
-      lang="fr"
+      lang="es"
       suppressHydrationWarning
       className={`${geistSans.variable} ${anton.variable} h-full antialiased`}
     >

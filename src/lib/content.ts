@@ -5,6 +5,7 @@ import { cacheLife, cacheTag } from "next/cache";
 export type MenuItem = {
   href: string;
   label: string;
+  labelEn: string;
   color: string;
 };
 

@@ -9,8 +9,11 @@ import {
   useState,
 } from "react";
 import { BrandWordmark } from "@/components/brand-wordmark";
+import { LanguageToggle } from "@/components/language-toggle";
+import { LocaleProvider, useLocale } from "@/components/locale-provider";
 import { MenuArrow, SiteMenu } from "@/components/site-menu";
 import type { SiteContent } from "@/lib/content";
+import { menuLabel } from "@/lib/i18n";
 
 function ArrowIcon() {
   return (
@@ -36,7 +39,16 @@ const BOOT_EXIT_MS = 1400;
 const BOOT_STAGGER_TAIL_MS = 1100;
 
 export function HeroScroll({ content }: HeroScrollProps) {
+  return (
+    <LocaleProvider>
+      <HeroScrollInner content={content} />
+    </LocaleProvider>
+  );
+}
+
+function HeroScrollInner({ content }: HeroScrollProps) {
   const { brand, menu, socials, projects } = content;
+  const { locale, copy } = useLocale();
   const projectCount = Math.max(projects.length, 1);
   const classicLayout = projects.length === 3;
   const trackRef = useRef<HTMLElement>(null);
@@ -285,7 +297,7 @@ export function HeroScroll({ content }: HeroScrollProps) {
                           scrollToStage(Math.min(index + 2, projectCount))
                         }
                         className="project-arrow absolute right-[1.35rem] bottom-[1.7rem] flex size-[3.35rem] items-center justify-center rounded-full border border-[#1c1c1c] text-[#0a0a0c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#3858E9] lg:right-[1.7rem] lg:bottom-[2rem]"
-                        aria-label={`Voir le projet suivant après ${project.title}`}
+                        aria-label={copy.nextProject(project.title)}
                       >
                         <ArrowIcon />
                       </button>
@@ -306,61 +318,64 @@ export function HeroScroll({ content }: HeroScrollProps) {
               {brand.name}
             </a>
 
-            <div className="menu-fab absolute top-[1.35rem] right-[1.5rem] z-30 hidden lg:block">
-              <button
-                type="button"
-                className="menu-pill"
-                aria-expanded={menuOpen}
-                aria-controls="site-menu-panel"
-                onClick={() => {
-                  setMenuOpen((open) => {
-                    menuOpenRef.current = !open;
-                    return !open;
-                  });
-                }}
-              >
-                <span className="menu-pill__label">Menu</span>
-                <span className="menu-pill__cluster" aria-hidden>
-                  <span className="menu-pill__grow" />
-                  <span className="menu-pill__orb-slot">
-                    <span className="menu-pill__orb">
-                      <span className="menu-pill__burger">
-                        <span />
-                        <span />
+            <div className="menu-fab absolute top-[1.35rem] right-[1.5rem] z-30 hidden items-center gap-4 lg:flex">
+              <LanguageToggle />
+              <div className="relative">
+                <button
+                  type="button"
+                  className="menu-pill"
+                  aria-expanded={menuOpen}
+                  aria-controls="site-menu-panel"
+                  onClick={() => {
+                    setMenuOpen((open) => {
+                      menuOpenRef.current = !open;
+                      return !open;
+                    });
+                  }}
+                >
+                  <span className="menu-pill__label">{copy.menu}</span>
+                  <span className="menu-pill__cluster" aria-hidden>
+                    <span className="menu-pill__grow" />
+                    <span className="menu-pill__orb-slot">
+                      <span className="menu-pill__orb">
+                        <span className="menu-pill__burger">
+                          <span />
+                          <span />
+                        </span>
                       </span>
                     </span>
                   </span>
-                </span>
-              </button>
-              {menuOpen ? (
-                <nav
-                  id="site-menu-panel"
-                  aria-label="Principal"
-                  className="absolute top-[calc(100%+0.75rem)] right-0 w-56 rounded-2xl bg-[#f0efeb] p-3 shadow-[0_16px_40px_rgba(0,0,0,0.16)]"
-                >
-                  <ul className="flex flex-col">
-                    {menu.map((item) => (
-                      <li key={item.href}>
-                        <a
-                          href={item.href}
-                          className="site-menu-link flex items-center gap-3 rounded-xl px-3 py-2.5 text-[0.95rem] hover:bg-black/5"
-                          onClick={() => {
-                            menuOpenRef.current = false;
-                            setMenuOpen(false);
-                          }}
-                        >
-                          <span className="site-menu-dot-slot" aria-hidden>
-                            <span className="site-menu-dot bg-[#3858E9]">
-                              <MenuArrow />
+                </button>
+                {menuOpen ? (
+                  <nav
+                    id="site-menu-panel"
+                    aria-label={copy.menuAria}
+                    className="absolute top-[calc(100%+0.75rem)] right-0 w-56 rounded-2xl bg-[#f0efeb] p-3 shadow-[0_16px_40px_rgba(0,0,0,0.16)]"
+                  >
+                    <ul className="flex flex-col">
+                      {menu.map((item) => (
+                        <li key={item.href}>
+                          <a
+                            href={item.href}
+                            className="site-menu-link flex items-center gap-3 rounded-xl px-3 py-2.5 text-[0.95rem] hover:bg-black/5"
+                            onClick={() => {
+                              menuOpenRef.current = false;
+                              setMenuOpen(false);
+                            }}
+                          >
+                            <span className="site-menu-dot-slot" aria-hidden>
+                              <span className="site-menu-dot bg-[#3858E9]">
+                                <MenuArrow />
+                              </span>
                             </span>
-                          </span>
-                          {item.label}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </nav>
-              ) : null}
+                            {menuLabel(item, locale)}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </nav>
+                ) : null}
+              </div>
             </div>
           </div>
         </div>

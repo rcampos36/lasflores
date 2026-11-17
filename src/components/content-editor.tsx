@@ -89,7 +89,12 @@ export function ContentEditor({ initialContent }: ContentEditorProps) {
       ...current,
       menu: [
         ...current.menu,
-        { href: "#", label: "New link", color: "#c5cdd0" },
+        {
+          href: "#",
+          label: "Nuevo enlace",
+          labelEn: "New link",
+          color: "#c5cdd0",
+        },
       ],
     }));
   }
@@ -284,14 +289,23 @@ export function ContentEditor({ initialContent }: ContentEditorProps) {
           {content.menu.map((item, index) => (
             <div
               key={`menu-${index}`}
-              className="grid gap-3 rounded-2xl border border-black/6 p-4 sm:grid-cols-[1fr_1fr_7rem_auto]"
+              className="grid gap-3 rounded-2xl border border-black/6 p-4 sm:grid-cols-[1fr_1fr_1fr_7rem_auto]"
             >
-              <Field label="Label">
+              <Field label="Label (ES)">
                 <input
                   className={inputClass}
                   value={item.label}
                   onChange={(event) =>
                     updateMenu(index, "label", event.target.value)
+                  }
+                />
+              </Field>
+              <Field label="Label (EN)">
+                <input
+                  className={inputClass}
+                  value={item.labelEn}
+                  onChange={(event) =>
+                    updateMenu(index, "labelEn", event.target.value)
                   }
                 />
               </Field>
