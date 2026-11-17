@@ -259,7 +259,7 @@ html[data-booting="true"] .boot-home .hero-stage {
   color: #3858e9;
   transform: translate3d(
       0,
-      calc((1 - var(--rise-progress, 1)) * 3.1rem),
+      calc((1 - var(--rise-progress, 0)) * 4.25rem),
       0
     )
     scale(1.18);
@@ -461,11 +461,12 @@ html[data-booting="true"] .boot-home .hero-stage {
 
 .project-clip {
   overflow: hidden;
-  min-height: 2.85rem;
+  height: 2.6rem;
 }
 
 .project-clip--year {
   justify-self: start;
+  height: 2.1rem;
 }
 
 .project-clip--tag-mid {
@@ -476,12 +477,21 @@ html[data-booting="true"] .boot-home .hero-stage {
 .project-clip--tag-end {
   justify-self: end;
   max-width: 12.5rem;
-  min-height: 3.4rem;
+  height: 3.1rem;
+}
+
+.project-clip--arrow {
+  width: 3.35rem;
+  height: 3.35rem;
+}
+
+.project-clip--arrow .project-arrow.project-rise {
+  transform: translate3d(0, calc((1 - var(--rise-progress)) * 4.25rem), 0);
 }
 
 .project-title-clip {
   overflow: hidden;
-  height: 1.1em;
+  height: 1em;
   transform: translate3d(0, -50%, 0);
   font-size: clamp(3.6rem, 7.4vw, 6.75rem);
 }
@@ -497,25 +507,27 @@ html[data-booting="true"] .boot-home .hero-stage {
 
 .project-rise {
   --rise-i: 0;
-  --rise-progress: 1;
+  /* Hidden by default until scroll-driven --base advances */
+  --rise-progress: 0;
   --rise-stagger: min(0.55, calc(var(--rise-i) * 0.14));
-  --base: 1;
+  --base: 0;
   opacity: 1;
-  transform: translate3d(0, calc((1 - var(--rise-progress)) * 3.1rem), 0);
+  transform: translate3d(0, calc((1 - var(--rise-progress)) * 5rem), 0);
   will-change: transform;
 }
 
-/* Meta travels in rem so it fully clears its own clip, not the title zone */
+/* Meta must travel past its clip height so nothing peeks before scroll */
 .project-rise--meta {
   display: block;
-  transform: translate3d(0, calc((1 - var(--rise-progress)) * 3.1rem), 0);
+  transform: translate3d(0, calc((1 - var(--rise-progress)) * 5rem), 0);
 }
 
 .project-title-char.project-rise {
   --rise-stagger: calc(
     0.2 + var(--rise-i) / max(1, calc(var(--letter-count, 1) - 1)) * 0.7
   );
-  transform: translate3d(0, calc((1 - var(--rise-progress)) * 1.2em), 0);
+  /* 1em clip → travel well beyond so glyphs stay fully masked */
+  transform: translate3d(0, calc((1 - var(--rise-progress)) * 1.85em), 0);
 }
 
 @media (max-width: 1023px) {
@@ -565,11 +577,11 @@ html[data-booting="true"] .boot-home .hero-stage {
   }
 
   .hero-stage[data-layout="simple"] .project-rise--meta {
-    --base: clamp(0, (var(--intro) - 0.42) / 0.4, 1);
+    --base: clamp(0, (var(--intro) - 0.72) / 0.28, 1);
   }
 
   .hero-stage[data-layout="simple"] .project-title-char {
-    --base: clamp(0, (var(--intro) - 0.58) / 0.38, 1);
+    --base: clamp(0, (var(--intro) - 0.82) / 0.18, 1);
   }
 
   .hero-stage {
@@ -682,44 +694,44 @@ html[data-booting="true"] .boot-home .hero-stage {
     );
   }
 
-  /* Meta clip reveals first; title clip starts after */
+  /* Start later so content stays fully masked until the panel is in focus */
   .project-1 .project-rise--meta {
-    --base: clamp(0, (var(--intro) - 0.42) / 0.4, 1);
+    --base: clamp(0, (var(--intro) - 0.72) / 0.28, 1);
   }
 
   .project-1 .project-title-char {
-    --base: clamp(0, (var(--intro) - 0.58) / 0.38, 1);
+    --base: clamp(0, (var(--intro) - 0.82) / 0.18, 1);
   }
 
   .project-2 .project-rise--meta {
-    --base: clamp(0, (var(--s1) - 0.34) / 0.42, 1);
+    --base: clamp(0, (var(--s1) - 0.62) / 0.3, 1);
   }
 
   .project-2 .project-title-char {
-    --base: clamp(0, (var(--s1) - 0.5) / 0.42, 1);
+    --base: clamp(0, (var(--s1) - 0.74) / 0.22, 1);
   }
 
   .project-3 .project-rise--meta {
-    --base: clamp(0, (var(--s2) - 0.34) / 0.42, 1);
+    --base: clamp(0, (var(--s2) - 0.62) / 0.3, 1);
   }
 
   .project-3 .project-title-char {
-    --base: clamp(0, (var(--s2) - 0.5) / 0.42, 1);
+    --base: clamp(0, (var(--s2) - 0.74) / 0.22, 1);
   }
 
   .project-1 .project-arrow.project-rise,
   .project-1 .project-index {
-    --base: clamp(0, (var(--intro) - 0.62) / 0.35, 1);
+    --base: clamp(0, (var(--intro) - 0.88) / 0.12, 1);
   }
 
   .project-2 .project-arrow.project-rise,
   .project-2 .project-index {
-    --base: clamp(0, (var(--s1) - 0.55) / 0.4, 1);
+    --base: clamp(0, (var(--s1) - 0.82) / 0.18, 1);
   }
 
   .project-3 .project-arrow.project-rise,
   .project-3 .project-index {
-    --base: clamp(0, (var(--s2) - 0.55) / 0.4, 1);
+    --base: clamp(0, (var(--s2) - 0.82) / 0.18, 1);
   }
 
   .brand-lockup {

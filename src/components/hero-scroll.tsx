@@ -355,17 +355,19 @@ function HeroScrollInner({ content }: HeroScrollProps) {
                         </h2>
                       </div>
 
-                      <button
-                        type="button"
-                        onClick={() =>
-                          scrollToStage(Math.min(index + 2, projectCount))
-                        }
-                        className="project-arrow project-rise absolute right-[1.35rem] bottom-[1.7rem] flex size-[3.35rem] items-center justify-center rounded-full border border-[#1c1c1c] text-[#0a0a0c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#3858E9] lg:right-[1.7rem] lg:bottom-[2rem]"
-                        style={{ ["--rise-i" as string]: 3 }}
-                        aria-label={copy.nextProject(project.title)}
-                      >
-                        <ArrowIcon />
-                      </button>
+                      <div className="project-clip project-clip--arrow absolute right-[1.35rem] bottom-[1.7rem] lg:right-[1.7rem] lg:bottom-[2rem]">
+                        <button
+                          type="button"
+                          onClick={() =>
+                            scrollToStage(Math.min(index + 2, projectCount))
+                          }
+                          className="project-arrow project-rise flex size-[3.35rem] items-center justify-center rounded-full border border-[#1c1c1c] text-[#0a0a0c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#3858E9]"
+                          style={{ ["--rise-i" as string]: 0 }}
+                          aria-label={copy.nextProject(project.title)}
+                        >
+                          <ArrowIcon />
+                        </button>
+                      </div>
 
                       <span
                         className="project-rise project-index pointer-events-none absolute bottom-[1.7rem] left-[1.35rem] text-[0.68rem] tracking-[0.16em] lg:bottom-[2rem] lg:left-[1.7rem]"
