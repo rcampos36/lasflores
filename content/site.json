@@ -58,8 +58,13 @@
         "Sitio web",
         "Arquitectura y dirección\nde obra"
       ],
+      "tagsEn": [
+        "Website",
+        "Architecture and site\nsupervision"
+      ],
       "image": "/uploads/1794877880396-cce64c28.jpg",
       "imageAlt": "Casa contemporánea de piedra y vidrio al atardecer",
+      "imageAltEn": "Contemporary stone and glass house at dusk",
       "color": "#bfcbd9",
       "media": "#bfcbd9"
     },
@@ -71,8 +76,13 @@
         "Dirección creativa",
         "Objetos y puesta en escena"
       ],
+      "tagsEn": [
+        "Creative direction",
+        "Objects and set design"
+      ],
       "image": "/uploads/1794887580299-419dd58a.jpg",
       "imageAlt": "Persona sentada entre esculturas de colores",
+      "imageAltEn": "Person sitting among colorful sculptures",
       "color": "#b692a0",
       "media": "#b692a0"
     },
@@ -84,8 +94,13 @@
         "Identidad de marca",
         "Experiencia de marca"
       ],
+      "tagsEn": [
+        "Brand identity",
+        "Brand experience"
+      ],
       "image": "/uploads/1794877914735-5b0f9862.jpg",
       "imageAlt": "Paisaje natural con vegetación",
+      "imageAltEn": "Natural landscape with vegetation",
       "color": "#798e7b",
       "media": "#6a8272"
     }

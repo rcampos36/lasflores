@@ -47,8 +47,10 @@ function emptyProject(projects: Project[]): Project {
     title: "Nuevo proyecto",
     year: String(new Date().getFullYear()),
     tags: ["Categoría", "Descripción breve"],
+    tagsEn: ["Category", "Short description"],
     image: null,
     imageAlt: "",
+    imageAltEn: "",
     color,
     media: color,
   };
@@ -149,11 +151,21 @@ export function ContentEditor({ initialContent }: ContentEditorProps) {
     }));
   }
 
-  function updateProjectTag(index: number, tagIndex: 0 | 1, value: string) {
+  function updateProjectTag(
+    index: number,
+    tagIndex: 0 | 1,
+    value: string,
+    locale: "es" | "en" = "es",
+  ) {
     setContent((current) => ({
       ...current,
       projects: current.projects.map((project, i) => {
         if (i !== index) return project;
+        if (locale === "en") {
+          const tagsEn: [string, string] = [...project.tagsEn];
+          tagsEn[tagIndex] = value;
+          return { ...project, tagsEn };
+        }
         const tags: [string, string] = [...project.tags];
         tags[tagIndex] = value;
         return { ...project, tags };
@@ -493,12 +505,21 @@ export function ContentEditor({ initialContent }: ContentEditorProps) {
                     }
                   />
                 </Field>
-                <Field label="Image alt">
+                <Field label="Image alt (ES)">
                   <input
                     className={inputClass}
                     value={project.imageAlt}
                     onChange={(event) =>
                       updateProject(index, "imageAlt", event.target.value)
+                    }
+                  />
+                </Field>
+                <Field label="Image alt (EN)">
+                  <input
+                    className={inputClass}
+                    value={project.imageAltEn}
+                    onChange={(event) =>
+                      updateProject(index, "imageAltEn", event.target.value)
                     }
                   />
                 </Field>
@@ -520,21 +541,39 @@ export function ContentEditor({ initialContent }: ContentEditorProps) {
                     }
                   />
                 </Field>
-                <Field label="Tag 1">
+                <Field label="Tag 1 (ES)">
                   <input
                     className={inputClass}
                     value={project.tags[0]}
                     onChange={(event) =>
-                      updateProjectTag(index, 0, event.target.value)
+                      updateProjectTag(index, 0, event.target.value, "es")
                     }
                   />
                 </Field>
-                <Field label="Tag 2">
+                <Field label="Tag 1 (EN)">
+                  <input
+                    className={inputClass}
+                    value={project.tagsEn[0]}
+                    onChange={(event) =>
+                      updateProjectTag(index, 0, event.target.value, "en")
+                    }
+                  />
+                </Field>
+                <Field label="Tag 2 (ES)">
                   <textarea
                     className={`${inputClass} min-h-20 resize-y`}
                     value={project.tags[1]}
                     onChange={(event) =>
-                      updateProjectTag(index, 1, event.target.value)
+                      updateProjectTag(index, 1, event.target.value, "es")
+                    }
+                  />
+                </Field>
+                <Field label="Tag 2 (EN)">
+                  <textarea
+                    className={`${inputClass} min-h-20 resize-y`}
+                    value={project.tagsEn[1]}
+                    onChange={(event) =>
+                      updateProjectTag(index, 1, event.target.value, "en")
                     }
                   />
                 </Field>

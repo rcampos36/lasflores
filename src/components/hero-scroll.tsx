@@ -13,7 +13,7 @@ import { LanguageToggle } from "@/components/language-toggle";
 import { LocaleProvider, useLocale } from "@/components/locale-provider";
 import { MenuArrow, SiteMenu } from "@/components/site-menu";
 import type { SiteContent } from "@/lib/content";
-import { menuLabel } from "@/lib/i18n";
+import { menuLabel, projectImageAlt, projectTags } from "@/lib/i18n";
 
 function ArrowIcon() {
   return (
@@ -248,7 +248,11 @@ function HeroScrollInner({ content }: HeroScrollProps) {
               </div>
 
               <div className="projects-row flex flex-col">
-                {projects.map((project, index) => (
+                {projects.map((project, index) => {
+                  const tags = projectTags(project, locale);
+                  const imageAlt = projectImageAlt(project, locale);
+
+                  return (
                   <article
                     key={project.id}
                     className={`project relative h-[100dvh] overflow-hidden${classicLayout ? ` project-${index + 1}` : ""}`}
@@ -262,7 +266,7 @@ function HeroScrollInner({ content }: HeroScrollProps) {
                       {project.image ? (
                         <Image
                           src={project.image}
-                          alt={project.imageAlt}
+                          alt={imageAlt}
                           fill
                           priority={index === 0}
                           sizes="(max-width: 1024px) 100vw, 66vw"
@@ -277,10 +281,10 @@ function HeroScrollInner({ content }: HeroScrollProps) {
                           {project.year}
                         </span>
                         <p className="pointer-events-none absolute top-[1.85rem] left-1/2 -translate-x-1/2 text-[0.68rem] tracking-[0.14em] uppercase lg:top-[2rem]">
-                          {project.tags[0]}
+                          {tags[0]}
                         </p>
                         <p className="absolute top-[1.55rem] right-[1.35rem] max-w-[12.5rem] text-right text-[0.68rem] leading-[1.35] tracking-[0.12em] whitespace-pre-line uppercase lg:top-[1.65rem] lg:right-[1.7rem]">
-                          {project.tags[1]}
+                          {tags[1]}
                         </p>
                       </div>
 
@@ -307,7 +311,8 @@ function HeroScrollInner({ content }: HeroScrollProps) {
                       </span>
                     </div>
                   </article>
-                ))}
+                  );
+                })}
               </div>
             </div>
 

@@ -25,3 +25,17 @@ export function menuLabel(
 ) {
   return locale === "en" ? item.labelEn : item.label;
 }
+
+export function projectTags(
+  project: { tags: [string, string]; tagsEn: [string, string] },
+  locale: Locale,
+): [string, string] {
+  return locale === "en" ? project.tagsEn : project.tags;
+}
+
+export function projectImageAlt(
+  project: { imageAlt: string; imageAltEn: string },
+  locale: Locale,
+) {
+  return locale === "en" ? project.imageAltEn : project.imageAlt;
+}

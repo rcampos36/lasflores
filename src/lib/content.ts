@@ -19,8 +19,10 @@ export type Project = {
   title: string;
   year: string;
   tags: [string, string];
+  tagsEn: [string, string];
   image: string | null;
   imageAlt: string;
+  imageAltEn: string;
   color: string;
   media: string;
 };
