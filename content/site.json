@@ -1,0 +1,89 @@
+{
+  "brand": {
+    "name": "LAS FLORES",
+    "tagline": "CREATIVE CO",
+    "title": "Las Flores",
+    "description": "Creative studio. Sites, design, and detail-driven digital work."
+  },
+  "menu": [
+    {
+      "href": "#projets",
+      "label": "Projets",
+      "color": "#e19269"
+    },
+    {
+      "href": "#expertises",
+      "label": "Expertises",
+      "color": "#7d877c"
+    },
+    {
+      "href": "#agence",
+      "label": "Agence",
+      "color": "#b1939d"
+    },
+    {
+      "href": "#contact",
+      "label": "Contact",
+      "color": "#c5cdd0"
+    }
+  ],
+  "socials": [
+    {
+      "href": "#",
+      "label": "Instagram"
+    },
+    {
+      "href": "#",
+      "label": "LinkedIn"
+    },
+    {
+      "href": "#",
+      "label": "Twitter"
+    },
+    {
+      "href": "#",
+      "label": "Facebook"
+    }
+  ],
+  "projects": [
+    {
+      "id": "01",
+      "title": "Archidomo",
+      "year": "2026",
+      "tags": [
+        "Site vitrine",
+        "Conception architecturale & maîtrise\nd'œuvre"
+      ],
+      "image": "/uploads/1794877880396-cce64c28.jpg",
+      "imageAlt": "Maison contemporaine en pierre et verre au crépuscule",
+      "color": "#bfcbd9",
+      "media": "#bfcbd9"
+    },
+    {
+      "id": "02",
+      "title": "Atelier",
+      "year": "2025",
+      "tags": [
+        "Direction artistique",
+        "Objet & scénographie"
+      ],
+      "image": "/uploads/1794887580299-419dd58a.jpg",
+      "imageAlt": "Personne assise parmi des sculptures colorées",
+      "color": "#b692a0",
+      "media": "#b692a0"
+    },
+    {
+      "id": "03",
+      "title": "Verde",
+      "year": "2024",
+      "tags": [
+        "Identité visuelle",
+        "Expérience de marque"
+      ],
+      "image": "/uploads/1794877914735-5b0f9862.jpg",
+      "imageAlt": "zakaria-zayane-9aWbSJLYlr4-unsplash",
+      "color": "#798e7b",
+      "media": "#6a8272"
+    }
+  ]
+}
