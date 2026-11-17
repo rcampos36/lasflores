@@ -257,10 +257,31 @@ html[data-booting="true"] .boot-home .hero-stage {
 .project-arrow:focus-visible {
   border-color: #3858e9;
   color: #3858e9;
-  transform: scale(1.18);
+  transform: translate3d(
+      0,
+      calc((1 - var(--rise-progress, 1)) * 2.8rem),
+      0
+    )
+    scale(1.18);
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .project-rise,
+  .project-rise--center,
+  .project-title-char.project-rise {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .project-title {
+    transform: translate3d(0, -50%, 0) !important;
+  }
+
+  .project-rise--center {
+    transform: translate3d(-50%, 0, 0) !important;
+  }
+
   .site-menu-dot,
   .site-menu-arrow,
   .menu-pill,
@@ -438,6 +459,47 @@ html[data-booting="true"] .boot-home .hero-stage {
   opacity: 1;
 }
 
+.project-rise {
+  --rise-i: 0;
+  --rise-progress: 1;
+  /* Stagger starts later letters, but always settles to 0 offset when --base hits 1 */
+  --rise-stagger: min(0.58, calc(var(--rise-i) * 0.055));
+  opacity: var(--rise-progress);
+  transform: translate3d(0, calc((1 - var(--rise-progress)) * 2.8rem), 0);
+  will-change: transform, opacity;
+}
+
+.project-rise--center {
+  transform: translate3d(
+    -50%,
+    calc((1 - var(--rise-progress)) * 2.8rem),
+    0
+  );
+}
+
+.project-title {
+  transform: translate3d(0, -50%, 0);
+  white-space: nowrap;
+}
+
+.project-title-char.project-rise {
+  transform: translate3d(0, calc((1 - var(--rise-progress)) * 3.6rem), 0);
+}
+
+@media (max-width: 1023px) {
+  .project-rise {
+    --rise-progress: 0;
+    transition:
+      opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: calc(var(--rise-i) * 0.09s);
+  }
+
+  .project[data-inview="true"] .project-rise {
+    --rise-progress: 1;
+  }
+}
+
 @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
   html {
     scroll-snap-type: y proximity;
@@ -463,7 +525,17 @@ html[data-booting="true"] .boot-home .hero-stage {
   }
 
   .hero-stage[data-layout="simple"] .project-details {
-    opacity: clamp(0, (var(--intro) - 0.58) / 0.42, 1);
+    opacity: 1;
+  }
+
+  .hero-stage[data-layout="simple"] .project-rise {
+    --base: clamp(0, (var(--intro) - 0.48) / 0.48, 1);
+    --rise-progress: clamp(
+      0,
+      (var(--base) - var(--rise-stagger)) /
+        max(0.01, calc(1 - var(--rise-stagger))),
+      1
+    );
   }
 
   .hero-stage {
@@ -558,16 +630,40 @@ html[data-booting="true"] .boot-home .hero-stage {
     pointer-events: auto;
   }
 
-  .project-1 .project-details {
-    opacity: clamp(0, (var(--intro) - 0.58) / 0.42, 1);
-  }
-
-  .project-2 .project-details {
-    opacity: clamp(0, (var(--s1) - 0.5) / 0.5, 1);
-  }
-
+  .project-1 .project-details,
+  .project-2 .project-details,
   .project-3 .project-details {
-    opacity: clamp(0, (var(--s2) - 0.5) / 0.5, 1);
+    opacity: 1;
+  }
+
+  .project-1 .project-rise {
+    --base: clamp(0, (var(--intro) - 0.48) / 0.48, 1);
+    --rise-progress: clamp(
+      0,
+      (var(--base) - var(--rise-stagger)) /
+        max(0.01, calc(1 - var(--rise-stagger))),
+      1
+    );
+  }
+
+  .project-2 .project-rise {
+    --base: clamp(0, (var(--s1) - 0.4) / 0.55, 1);
+    --rise-progress: clamp(
+      0,
+      (var(--base) - var(--rise-stagger)) /
+        max(0.01, calc(1 - var(--rise-stagger))),
+      1
+    );
+  }
+
+  .project-3 .project-rise {
+    --base: clamp(0, (var(--s2) - 0.4) / 0.55, 1);
+    --rise-progress: clamp(
+      0,
+      (var(--base) - var(--rise-stagger)) /
+        max(0.01, calc(1 - var(--rise-stagger))),
+      1
+    );
   }
 
   .brand-lockup {
