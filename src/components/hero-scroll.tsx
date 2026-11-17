@@ -17,12 +17,14 @@ import { menuLabel, projectImageAlt, projectTags } from "@/lib/i18n";
 
 function ArrowIcon() {
   return (
-    <svg viewBox="0 0 24 24" className="size-5" aria-hidden>
+    <svg className="project-arrow__svg" viewBox="0 0 24 24" aria-hidden>
       <path
         d="M7 17 17 7M17 7H9M17 7v8"
         fill="none"
         stroke="currentColor"
         strokeWidth="1.4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -281,6 +283,9 @@ function HeroScrollInner({ content }: HeroScrollProps) {
                   const tags = projectTags(project, locale);
                   const imageAlt = projectImageAlt(project, locale);
 
+                  const goNext = () =>
+                    scrollToStage(Math.min(index + 2, projectCount));
+
                   return (
                   <article
                     key={project.id}
@@ -288,9 +293,12 @@ function HeroScrollInner({ content }: HeroScrollProps) {
                     style={{ backgroundColor: project.color }}
                     aria-labelledby={`project-${project.id}`}
                   >
-                    <div
+                    <button
+                      type="button"
                       className="project-photo"
                       style={{ backgroundColor: project.media }}
+                      onClick={goNext}
+                      aria-label={copy.nextProject(project.title)}
                     >
                       {project.image ? (
                         <Image
@@ -299,10 +307,10 @@ function HeroScrollInner({ content }: HeroScrollProps) {
                           fill
                           priority={index === 0}
                           sizes="(max-width: 1024px) 100vw, 66vw"
-                          className="object-cover object-[center_42%]"
+                          className="pointer-events-none object-cover object-[center_42%]"
                         />
                       ) : null}
-                    </div>
+                    </button>
 
                     <div className="project-details absolute inset-x-0 top-[58%] bottom-0 lg:top-[64.9%]">
                       <div className="project-meta relative mx-[1.35rem] mt-[1.4rem] lg:mx-[1.7rem] lg:mt-[1.5rem]">
@@ -358,14 +366,15 @@ function HeroScrollInner({ content }: HeroScrollProps) {
                       <div className="project-clip project-clip--arrow absolute right-[1.35rem] bottom-[1.7rem] lg:right-[1.7rem] lg:bottom-[2rem]">
                         <button
                           type="button"
-                          onClick={() =>
-                            scrollToStage(Math.min(index + 2, projectCount))
-                          }
-                          className="project-arrow project-rise flex size-[3.35rem] items-center justify-center rounded-full border border-[#1c1c1c] text-[#0a0a0c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#3858E9]"
+                          className="project-arrow project-rise"
                           style={{ ["--rise-i" as string]: 0 }}
+                          onClick={goNext}
                           aria-label={copy.nextProject(project.title)}
                         >
-                          <ArrowIcon />
+                          <span className="project-arrow__fill" aria-hidden />
+                          <span className="project-arrow__icon" aria-hidden>
+                            <ArrowIcon />
+                          </span>
                         </button>
                       </div>
 
