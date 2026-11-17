@@ -305,45 +305,55 @@ function HeroScrollInner({ content }: HeroScrollProps) {
                     </div>
 
                     <div className="project-details absolute inset-x-0 top-[58%] bottom-0 lg:top-[64.9%]">
-                      <div className="relative px-[1.35rem] pt-[1.4rem] lg:px-[1.7rem] lg:pt-[1.5rem]">
-                        <span
-                          className="project-rise inline-flex rounded-full border border-[#1c1c1c] px-[0.9rem] py-[0.38rem] text-[0.78rem] leading-none tracking-[-0.01em]"
-                          style={{ ["--rise-i" as string]: 0 }}
-                        >
-                          {project.year}
-                        </span>
-                        <p
-                          className="project-rise project-rise--center pointer-events-none absolute top-[1.85rem] left-1/2 text-[0.68rem] tracking-[0.14em] uppercase lg:top-[2rem]"
-                          style={{ ["--rise-i" as string]: 1 }}
-                        >
-                          {tags[0]}
-                        </p>
-                        <p
-                          className="project-rise absolute top-[1.55rem] right-[1.35rem] max-w-[12.5rem] text-right text-[0.68rem] leading-[1.35] tracking-[0.12em] whitespace-pre-line uppercase lg:top-[1.65rem] lg:right-[1.7rem]"
-                          style={{ ["--rise-i" as string]: 2 }}
-                        >
-                          {tags[1]}
-                        </p>
+                      <div className="project-meta relative mx-[1.35rem] mt-[1.4rem] lg:mx-[1.7rem] lg:mt-[1.5rem]">
+                        <div className="project-clip project-clip--year">
+                          <span
+                            className="project-rise project-rise--meta inline-flex rounded-full border border-[#1c1c1c] px-[0.9rem] py-[0.38rem] text-[0.78rem] leading-none tracking-[-0.01em]"
+                            style={{ ["--rise-i" as string]: 0 }}
+                          >
+                            {project.year}
+                          </span>
+                        </div>
+                        <div className="project-clip project-clip--tag-mid">
+                          <p
+                            className="project-rise project-rise--meta project-rise--center text-[0.68rem] tracking-[0.14em] uppercase"
+                            style={{ ["--rise-i" as string]: 1 }}
+                          >
+                            {tags[0]}
+                          </p>
+                        </div>
+                        <div className="project-clip project-clip--tag-end">
+                          <p
+                            className="project-rise project-rise--meta text-right text-[0.68rem] leading-[1.35] tracking-[0.12em] whitespace-pre-line uppercase"
+                            style={{ ["--rise-i" as string]: 2 }}
+                          >
+                            {tags[1]}
+                          </p>
+                        </div>
                       </div>
 
-                      <h2
-                        id={`project-${project.id}`}
-                        className="project-title absolute inset-x-[1.1rem] top-[52%] text-center text-[clamp(3.6rem,7.4vw,6.75rem)] leading-[0.92] font-normal tracking-[-0.05em] lg:inset-x-[1.4rem]"
-                        aria-label={project.title}
-                      >
-                        {project.title.split("").map((char, letterIndex) => (
-                          <span
-                            key={`${project.id}-letter-${letterIndex}`}
-                            className="project-rise project-title-char inline-block"
-                            style={{
-                              ["--rise-i" as string]: 2.6 + letterIndex * 0.28,
-                            }}
-                            aria-hidden
-                          >
-                            {char === " " ? "\u00a0" : char}
-                          </span>
-                        ))}
-                      </h2>
+                      <div className="project-title-clip absolute inset-x-[1.1rem] top-[52%] lg:inset-x-[1.4rem]">
+                        <h2
+                          id={`project-${project.id}`}
+                          className="project-title text-center font-normal tracking-[-0.05em]"
+                          aria-label={project.title}
+                        >
+                          {project.title.split("").map((char, letterIndex) => (
+                            <span
+                              key={`${project.id}-letter-${letterIndex}`}
+                              className="project-rise project-title-char inline-block"
+                              style={{
+                                ["--rise-i" as string]: letterIndex,
+                                ["--letter-count" as string]:
+                                  project.title.length,
+                              }}
+                              aria-hidden
+                            >
+                              {char === " " ? "\u00a0" : char}
+                            </span>
+                          ))}
+                        </h2>
+                      </div>
 
                       <button
                         type="button"
@@ -351,15 +361,15 @@ function HeroScrollInner({ content }: HeroScrollProps) {
                           scrollToStage(Math.min(index + 2, projectCount))
                         }
                         className="project-arrow project-rise absolute right-[1.35rem] bottom-[1.7rem] flex size-[3.35rem] items-center justify-center rounded-full border border-[#1c1c1c] text-[#0a0a0c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#3858E9] lg:right-[1.7rem] lg:bottom-[2rem]"
-                        style={{ ["--rise-i" as string]: 5 }}
+                        style={{ ["--rise-i" as string]: 3 }}
                         aria-label={copy.nextProject(project.title)}
                       >
                         <ArrowIcon />
                       </button>
 
                       <span
-                        className="project-rise pointer-events-none absolute bottom-[1.7rem] left-[1.35rem] text-[0.68rem] tracking-[0.16em] lg:bottom-[2rem] lg:left-[1.7rem]"
-                        style={{ ["--rise-i" as string]: 4 }}
+                        className="project-rise project-index pointer-events-none absolute bottom-[1.7rem] left-[1.35rem] text-[0.68rem] tracking-[0.16em] lg:bottom-[2rem] lg:left-[1.7rem]"
+                        style={{ ["--rise-i" as string]: 2 }}
                       >
                         {project.id}
                       </span>

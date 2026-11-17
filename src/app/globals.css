@@ -259,7 +259,7 @@ html[data-booting="true"] .boot-home .hero-stage {
   color: #3858e9;
   transform: translate3d(
       0,
-      calc((1 - var(--rise-progress, 1)) * 2.8rem),
+      calc((1 - var(--rise-progress, 1)) * 3.1rem),
       0
     )
     scale(1.18);
@@ -267,19 +267,10 @@ html[data-booting="true"] .boot-home .hero-stage {
 
 @media (prefers-reduced-motion: reduce) {
   .project-rise,
-  .project-rise--center,
+  .project-rise--meta,
   .project-title-char.project-rise {
-    opacity: 1 !important;
     transform: none !important;
     transition: none !important;
-  }
-
-  .project-title {
-    transform: translate3d(0, -50%, 0) !important;
-  }
-
-  .project-rise--center {
-    transform: translate3d(-50%, 0, 0) !important;
   }
 
   .site-menu-dot,
@@ -459,40 +450,85 @@ html[data-booting="true"] .boot-home .hero-stage {
   opacity: 1;
 }
 
-.project-rise {
-  --rise-i: 0;
-  --rise-progress: 1;
-  /* Stagger starts later letters, but always settles to 0 offset when --base hits 1 */
-  --rise-stagger: min(0.58, calc(var(--rise-i) * 0.055));
-  opacity: var(--rise-progress);
-  transform: translate3d(0, calc((1 - var(--rise-progress)) * 2.8rem), 0);
-  will-change: transform, opacity;
+/* Separate clip sections: meta top vs title middle (no shared mask) */
+.project-meta {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 1fr);
+  align-items: start;
+  column-gap: 0.75rem;
+  min-height: 3.1rem;
 }
 
-.project-rise--center {
-  transform: translate3d(
-    -50%,
-    calc((1 - var(--rise-progress)) * 2.8rem),
-    0
-  );
+.project-clip {
+  overflow: hidden;
+  min-height: 2.85rem;
+}
+
+.project-clip--year {
+  justify-self: start;
+}
+
+.project-clip--tag-mid {
+  justify-self: center;
+  text-align: center;
+}
+
+.project-clip--tag-end {
+  justify-self: end;
+  max-width: 12.5rem;
+  min-height: 3.4rem;
+}
+
+.project-title-clip {
+  overflow: hidden;
+  height: 1.1em;
+  transform: translate3d(0, -50%, 0);
+  font-size: clamp(3.6rem, 7.4vw, 6.75rem);
 }
 
 .project-title {
-  transform: translate3d(0, -50%, 0);
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  font-size: 1em;
+  line-height: 1;
   white-space: nowrap;
 }
 
+.project-rise {
+  --rise-i: 0;
+  --rise-progress: 1;
+  --rise-stagger: min(0.55, calc(var(--rise-i) * 0.14));
+  --base: 1;
+  opacity: 1;
+  transform: translate3d(0, calc((1 - var(--rise-progress)) * 3.1rem), 0);
+  will-change: transform;
+}
+
+/* Meta travels in rem so it fully clears its own clip, not the title zone */
+.project-rise--meta {
+  display: block;
+  transform: translate3d(0, calc((1 - var(--rise-progress)) * 3.1rem), 0);
+}
+
 .project-title-char.project-rise {
-  transform: translate3d(0, calc((1 - var(--rise-progress)) * 3.6rem), 0);
+  --rise-stagger: calc(
+    0.2 + var(--rise-i) / max(1, calc(var(--letter-count, 1) - 1)) * 0.7
+  );
+  transform: translate3d(0, calc((1 - var(--rise-progress)) * 1.2em), 0);
 }
 
 @media (max-width: 1023px) {
   .project-rise {
     --rise-progress: 0;
-    transition:
-      opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
-      transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-    transition-delay: calc(var(--rise-i) * 0.09s);
+    transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: calc(var(--rise-i) * 0.07s);
+  }
+
+  .project-title-char.project-rise {
+    transition-delay: calc(
+      0.08s + var(--rise-i) / max(1, calc(var(--letter-count, 1) - 1)) * 0.55s
+    );
   }
 
   .project[data-inview="true"] .project-rise {
@@ -528,14 +564,12 @@ html[data-booting="true"] .boot-home .hero-stage {
     opacity: 1;
   }
 
-  .hero-stage[data-layout="simple"] .project-rise {
-    --base: clamp(0, (var(--intro) - 0.48) / 0.48, 1);
-    --rise-progress: clamp(
-      0,
-      (var(--base) - var(--rise-stagger)) /
-        max(0.01, calc(1 - var(--rise-stagger))),
-      1
-    );
+  .hero-stage[data-layout="simple"] .project-rise--meta {
+    --base: clamp(0, (var(--intro) - 0.42) / 0.4, 1);
+  }
+
+  .hero-stage[data-layout="simple"] .project-title-char {
+    --base: clamp(0, (var(--intro) - 0.58) / 0.38, 1);
   }
 
   .hero-stage {
@@ -636,8 +670,10 @@ html[data-booting="true"] .boot-home .hero-stage {
     opacity: 1;
   }
 
-  .project-1 .project-rise {
-    --base: clamp(0, (var(--intro) - 0.48) / 0.48, 1);
+  .project-1 .project-rise,
+  .project-2 .project-rise,
+  .project-3 .project-rise,
+  .hero-stage[data-layout="simple"] .project-rise {
     --rise-progress: clamp(
       0,
       (var(--base) - var(--rise-stagger)) /
@@ -646,24 +682,44 @@ html[data-booting="true"] .boot-home .hero-stage {
     );
   }
 
-  .project-2 .project-rise {
-    --base: clamp(0, (var(--s1) - 0.4) / 0.55, 1);
-    --rise-progress: clamp(
-      0,
-      (var(--base) - var(--rise-stagger)) /
-        max(0.01, calc(1 - var(--rise-stagger))),
-      1
-    );
+  /* Meta clip reveals first; title clip starts after */
+  .project-1 .project-rise--meta {
+    --base: clamp(0, (var(--intro) - 0.42) / 0.4, 1);
   }
 
-  .project-3 .project-rise {
-    --base: clamp(0, (var(--s2) - 0.4) / 0.55, 1);
-    --rise-progress: clamp(
-      0,
-      (var(--base) - var(--rise-stagger)) /
-        max(0.01, calc(1 - var(--rise-stagger))),
-      1
-    );
+  .project-1 .project-title-char {
+    --base: clamp(0, (var(--intro) - 0.58) / 0.38, 1);
+  }
+
+  .project-2 .project-rise--meta {
+    --base: clamp(0, (var(--s1) - 0.34) / 0.42, 1);
+  }
+
+  .project-2 .project-title-char {
+    --base: clamp(0, (var(--s1) - 0.5) / 0.42, 1);
+  }
+
+  .project-3 .project-rise--meta {
+    --base: clamp(0, (var(--s2) - 0.34) / 0.42, 1);
+  }
+
+  .project-3 .project-title-char {
+    --base: clamp(0, (var(--s2) - 0.5) / 0.42, 1);
+  }
+
+  .project-1 .project-arrow.project-rise,
+  .project-1 .project-index {
+    --base: clamp(0, (var(--intro) - 0.62) / 0.35, 1);
+  }
+
+  .project-2 .project-arrow.project-rise,
+  .project-2 .project-index {
+    --base: clamp(0, (var(--s1) - 0.55) / 0.4, 1);
+  }
+
+  .project-3 .project-arrow.project-rise,
+  .project-3 .project-index {
+    --base: clamp(0, (var(--s2) - 0.55) / 0.4, 1);
   }
 
   .brand-lockup {
