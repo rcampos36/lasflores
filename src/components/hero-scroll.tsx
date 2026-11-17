@@ -350,10 +350,7 @@ export function HeroScroll({ content }: HeroScrollProps) {
                           }}
                         >
                           <span className="site-menu-dot-slot" aria-hidden>
-                            <span
-                              className="site-menu-dot"
-                              style={{ backgroundColor: item.color }}
-                            >
+                            <span className="site-menu-dot bg-[#3858E9]">
                               <MenuArrow />
                             </span>
                           </span>
