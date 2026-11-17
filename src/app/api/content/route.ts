@@ -1,4 +1,4 @@
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 import {
   getSiteContent,
@@ -18,6 +18,9 @@ export async function PUT(request: Request) {
   }
 
   await saveSiteContent(body);
-  revalidateTag("site-content", "max");
+  // Expire immediately so editors see Spanish/updated copy on the next request.
+  revalidateTag("site-content", { expire: 0 });
+  revalidatePath("/", "layout");
+  revalidatePath("/edit");
   return NextResponse.json({ ok: true });
 }

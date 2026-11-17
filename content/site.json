@@ -3,7 +3,7 @@
     "name": "LAS FLORES",
     "tagline": "CREATIVE CO",
     "title": "Las Flores",
-    "description": "Creative studio. Sites, design, and detail-driven digital work."
+    "description": "Estudio creativo. Sitios, diseño y trabajo digital con atención al detalle."
   },
   "menu": [
     {
@@ -55,11 +55,11 @@
       "title": "Archidomo",
       "year": "2026",
       "tags": [
-        "Site vitrine",
-        "Conception architecturale & maîtrise\nd'œuvre"
+        "Sitio web",
+        "Arquitectura y dirección\nde obra"
       ],
       "image": "/uploads/1794877880396-cce64c28.jpg",
-      "imageAlt": "Maison contemporaine en pierre et verre au crépuscule",
+      "imageAlt": "Casa contemporánea de piedra y vidrio al atardecer",
       "color": "#bfcbd9",
       "media": "#bfcbd9"
     },
@@ -68,11 +68,11 @@
       "title": "Atelier",
       "year": "2025",
       "tags": [
-        "Direction artistique",
-        "Objet & scénographie"
+        "Dirección creativa",
+        "Objetos y puesta en escena"
       ],
       "image": "/uploads/1794887580299-419dd58a.jpg",
-      "imageAlt": "Personne assise parmi des sculptures colorées",
+      "imageAlt": "Persona sentada entre esculturas de colores",
       "color": "#b692a0",
       "media": "#b692a0"
     },
@@ -81,11 +81,11 @@
       "title": "Verde",
       "year": "2024",
       "tags": [
-        "Identité visuelle",
-        "Expérience de marque"
+        "Identidad de marca",
+        "Experiencia de marca"
       ],
       "image": "/uploads/1794877914735-5b0f9862.jpg",
-      "imageAlt": "zakaria-zayane-9aWbSJLYlr4-unsplash",
+      "imageAlt": "Paisaje natural con vegetación",
       "color": "#798e7b",
       "media": "#6a8272"
     }

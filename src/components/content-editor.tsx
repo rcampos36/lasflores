@@ -44,9 +44,9 @@ function emptyProject(projects: Project[]): Project {
   const color = PROJECT_COLORS[projects.length % PROJECT_COLORS.length];
   return {
     id: nextProjectId(projects),
-    title: "New project",
+    title: "Nuevo proyecto",
     year: String(new Date().getFullYear()),
-    tags: ["Category", "Short description"],
+    tags: ["Categoría", "Descripción breve"],
     image: null,
     imageAlt: "",
     color,
