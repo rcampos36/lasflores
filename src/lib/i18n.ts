@@ -8,6 +8,7 @@ export const uiCopy = {
     menu: "Menú",
     menuAria: "Principal",
     toggleLabel: "Cambiar idioma",
+    viewProjects: "Ver los proyectos",
     nextProject: (title: string) =>
       `Ver el siguiente proyecto después de ${title}`,
   },
@@ -15,6 +16,7 @@ export const uiCopy = {
     menu: "Menu",
     menuAria: "Main",
     toggleLabel: "Switch language",
+    viewProjects: "View the projects",
     nextProject: (title: string) => `View next project after ${title}`,
   },
 } as const;
@@ -38,4 +40,25 @@ export function projectImageAlt(
   locale: Locale,
 ) {
   return locale === "en" ? project.imageAltEn : project.imageAlt;
+}
+
+export function listingTitle(
+  listing: { title: string; titleEn: string },
+  locale: Locale,
+) {
+  return locale === "en" ? listing.titleEn : listing.title;
+}
+
+export function listingBlurb(
+  listing: { blurb: string; blurbEn: string },
+  locale: Locale,
+) {
+  return locale === "en" ? listing.blurbEn : listing.blurb;
+}
+
+export function listingItemLabel(
+  item: { label: string; labelEn: string },
+  locale: Locale,
+) {
+  return locale === "en" ? item.labelEn : item.label;
 }

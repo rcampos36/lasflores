@@ -121,6 +121,59 @@ export function ContentEditor({ initialContent }: ContentEditorProps) {
     }));
   }
 
+  function updateListing<K extends keyof SiteContent["listing"]>(
+    key: K,
+    value: SiteContent["listing"][K],
+  ) {
+    setContent((current) => ({
+      ...current,
+      listing: { ...current.listing, [key]: value },
+    }));
+  }
+
+  function updateListingItem(
+    index: number,
+    key: keyof SiteContent["listing"]["items"][number],
+    value: string,
+  ) {
+    setContent((current) => ({
+      ...current,
+      listing: {
+        ...current.listing,
+        items: current.listing.items.map((item, i) =>
+          i === index ? { ...item, [key]: value } : item,
+        ),
+      },
+    }));
+  }
+
+  function addListingItem() {
+    setContent((current) => ({
+      ...current,
+      listing: {
+        ...current.listing,
+        items: [
+          ...current.listing.items,
+          {
+            id: String(current.listing.items.length).padStart(2, "0"),
+            label: "Nueva especialidad",
+            labelEn: "New expertise",
+          },
+        ],
+      },
+    }));
+  }
+
+  function removeListingItem(index: number) {
+    setContent((current) => ({
+      ...current,
+      listing: {
+        ...current.listing,
+        items: current.listing.items.filter((_, i) => i !== index),
+      },
+    }));
+  }
+
   function addSocial() {
     setContent((current) => ({
       ...current,
@@ -389,6 +442,91 @@ export function ContentEditor({ initialContent }: ContentEditorProps) {
                   type="button"
                   className={buttonClass}
                   onClick={() => removeSocial(index)}
+                >
+                  Remove
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="flex flex-col gap-4 rounded-3xl border border-black/8 bg-white/70 p-5 sm:p-6">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2 className="text-lg tracking-[-0.03em]">Projects listing</h2>
+          <button type="button" className={buttonClass} onClick={addListingItem}>
+            Add row
+          </button>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Field label="Title (ES)">
+            <input
+              className={inputClass}
+              value={content.listing.title}
+              onChange={(event) => updateListing("title", event.target.value)}
+            />
+          </Field>
+          <Field label="Title (EN)">
+            <input
+              className={inputClass}
+              value={content.listing.titleEn}
+              onChange={(event) => updateListing("titleEn", event.target.value)}
+            />
+          </Field>
+          <Field label="Blurb (ES)">
+            <textarea
+              className={`${inputClass} min-h-24 resize-y`}
+              value={content.listing.blurb}
+              onChange={(event) => updateListing("blurb", event.target.value)}
+            />
+          </Field>
+          <Field label="Blurb (EN)">
+            <textarea
+              className={`${inputClass} min-h-24 resize-y`}
+              value={content.listing.blurbEn}
+              onChange={(event) => updateListing("blurbEn", event.target.value)}
+            />
+          </Field>
+        </div>
+        <div className="flex flex-col gap-4">
+          {content.listing.items.map((item, index) => (
+            <div
+              key={`listing-${index}`}
+              className="grid gap-3 rounded-2xl border border-black/6 p-4 sm:grid-cols-[5rem_1fr_1fr_auto]"
+            >
+              <Field label="ID">
+                <input
+                  className={inputClass}
+                  value={item.id}
+                  onChange={(event) =>
+                    updateListingItem(index, "id", event.target.value)
+                  }
+                />
+              </Field>
+              <Field label="Label (ES)">
+                <input
+                  className={inputClass}
+                  value={item.label}
+                  onChange={(event) =>
+                    updateListingItem(index, "label", event.target.value)
+                  }
+                />
+              </Field>
+              <Field label="Label (EN)">
+                <input
+                  className={inputClass}
+                  value={item.labelEn}
+                  onChange={(event) =>
+                    updateListingItem(index, "labelEn", event.target.value)
+                  }
+                />
+              </Field>
+              <div className="flex items-end">
+                <button
+                  type="button"
+                  className={buttonClass}
+                  onClick={() => removeListingItem(index)}
+                  disabled={content.listing.items.length <= 1}
                 >
                   Remove
                 </button>

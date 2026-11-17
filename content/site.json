@@ -49,6 +49,34 @@
       "label": "Facebook"
     }
   ],
+  "listing": {
+    "title": "Proyectos",
+    "titleEn": "Projects",
+    "blurb": "La creación y la innovación están en el centro de nuestro proceso, con ganas de hacer las cosas de otra manera, siempre a medida. Decimos no a lo ya hecho, a lo ya visto, a lo ya leído.",
+    "blurbEn": "Creation and innovation sit at the heart of our process, with a drive to do things differently, always custom. We say no to the already done, already seen, already read.",
+    "items": [
+      {
+        "id": "00",
+        "label": "Identidad visual, manual de marca, logo",
+        "labelEn": "Visual identity, brand guidelines, logo"
+      },
+      {
+        "id": "01",
+        "label": "Creación de sitio web a medida",
+        "labelEn": "Custom showcase website creation"
+      },
+      {
+        "id": "02",
+        "label": "Dirección artística, webdesign, UX y UI",
+        "labelEn": "Art direction, web design, UX & UI"
+      },
+      {
+        "id": "03",
+        "label": "E-commerce Shopify y plataforma de venta",
+        "labelEn": "Shopify e-commerce & sales platform"
+      }
+    ]
+  },
   "projects": [
     {
       "id": "01",
@@ -103,6 +131,132 @@
       "imageAltEn": "Natural landscape with vegetation",
       "color": "#798e7b",
       "media": "#6a8272"
+    },
+    {
+      "id": "04",
+      "title": "Nova",
+      "year": "2024",
+      "tags": [
+        "E-commerce",
+        "Tienda online a medida"
+      ],
+      "tagsEn": [
+        "E-commerce",
+        "Custom online store"
+      ],
+      "image": "/uploads/project-04-unsplash.jpg",
+      "imageAlt": "Interior luminoso de vivienda contemporánea",
+      "imageAltEn": "Bright contemporary home interior",
+      "color": "#c5cdd0",
+      "media": "#c5cdd0"
+    },
+    {
+      "id": "05",
+      "title": "Lumen",
+      "year": "2023",
+      "tags": [
+        "Dirección artística",
+        "Campaña y contenido"
+      ],
+      "tagsEn": [
+        "Art direction",
+        "Campaign and content"
+      ],
+      "image": "/uploads/project-05-unsplash.jpg",
+      "imageAlt": "Apartamento con luz natural y mobiliario",
+      "imageAltEn": "Apartment with natural light and furniture",
+      "color": "#e19269",
+      "media": "#e19269"
+    },
+    {
+      "id": "06",
+      "title": "Sanctuary",
+      "year": "2023",
+      "tags": [
+        "Dirección artística",
+        "Experiencia digital"
+      ],
+      "tagsEn": [
+        "Art direction",
+        "Digital experience"
+      ],
+      "image": "/uploads/project-06-unsplash.jpg",
+      "imageAlt": "Casa moderna con piscina al atardecer",
+      "imageAltEn": "Modern house with pool at dusk",
+      "color": "#bfcbd9",
+      "media": "#bfcbd9"
+    },
+    {
+      "id": "07",
+      "title": "Orbit",
+      "year": "2023",
+      "tags": [
+        "Sitio web",
+        "Producto y lanzamiento"
+      ],
+      "tagsEn": [
+        "Website",
+        "Product and launch"
+      ],
+      "image": "/uploads/project-07-unsplash.jpg",
+      "imageAlt": "Loft urbano con grandes ventanales",
+      "imageAltEn": "Urban loft with large windows",
+      "color": "#b692a0",
+      "media": "#b692a0"
+    },
+    {
+      "id": "08",
+      "title": "Canvas",
+      "year": "2022",
+      "tags": [
+        "Identidad visual",
+        "Sistema de marca"
+      ],
+      "tagsEn": [
+        "Visual identity",
+        "Brand system"
+      ],
+      "image": "/uploads/project-08-unsplash.jpg",
+      "imageAlt": "Cocina abierta de diseño residencial",
+      "imageAltEn": "Open residential kitchen design",
+      "color": "#798e7b",
+      "media": "#798e7b"
+    },
+    {
+      "id": "09",
+      "title": "Pulse",
+      "year": "2022",
+      "tags": [
+        "UX y UI",
+        "App y plataforma"
+      ],
+      "tagsEn": [
+        "UX & UI",
+        "App and platform"
+      ],
+      "image": "/uploads/project-09-unsplash.jpg",
+      "imageAlt": "Sala de estar minimalista contemporánea",
+      "imageAltEn": "Contemporary minimalist living room",
+      "color": "#c5cdd0",
+      "media": "#c5cdd0"
+    },
+    {
+      "id": "10",
+      "title": "Harbor",
+      "year": "2021",
+      "tags": [
+        "Sitio vitrina",
+        "Hospitalidad y marca"
+      ],
+      "tagsEn": [
+        "Showcase site",
+        "Hospitality and brand"
+      ],
+      "image": "/uploads/project-10-unsplash.jpg",
+      "imageAlt": "Espacio doméstico luminoso y amplio",
+      "imageAltEn": "Bright open domestic space",
+      "color": "#e19269",
+      "media": "#e19269"
     }
   ]
 }

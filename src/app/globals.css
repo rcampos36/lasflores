@@ -530,10 +530,82 @@ html[data-booting="true"] .boot-home .hero-stage {
 .hero-stage {
   --intro: 0;
   --step: 0;
+  --listing-morph: 0;
+  --listing-step: 0;
   --s1: clamp(0, var(--step), 1);
   --s2: clamp(0, calc(var(--step) - 1), 1);
   --logo: clamp(0, (var(--intro) - 0.38) / 0.62, 1);
   --menu: clamp(0, (var(--intro) - 0.46) / 0.54, 1);
+}
+
+/* Desktop listing morph layer — hidden on mobile */
+.listing-layer {
+  display: none;
+}
+
+.listing-rail-mobile {
+  background: #f0efeb;
+}
+
+.listing-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #7d877c;
+}
+
+/* Keep the end-of-list CTA out of the featured project row on desktop */
+.listing-cta--mobile {
+  display: none;
+  min-height: calc(100dvh / 3);
+  width: 100%;
+}
+
+@media (max-width: 1023px) {
+  .listing-cta--mobile {
+    display: flex;
+  }
+}
+
+.listing-cta__button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  border: 1.5px solid #0a0a0c;
+  border-radius: 999px;
+  padding: 0.95rem 1.55rem 0.95rem 1.75rem;
+  color: #0a0a0c;
+  font-size: clamp(0.72rem, 2.8vw, 0.82rem);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.listing-cta__button:hover,
+.listing-cta__button:focus-visible {
+  background: #0a0a0c;
+  color: #f0efeb;
+  outline: none;
+}
+
+.listing-cta__button:hover .listing-cta__dot,
+.listing-cta__button:focus-visible .listing-cta__dot {
+  background: #f0efeb;
+}
+
+.listing-cta__dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  flex: none;
+  border-radius: 999px;
+  background: #0a0a0c;
+  transition: background-color 0.25s ease;
 }
 
 .project-photo {
@@ -669,7 +741,337 @@ html[data-booting="true"] .boot-home .hero-stage {
   .hero-scroll {
     --stage: 120dvh;
     --project-count: 3;
-    height: calc(100dvh + var(--project-count) * var(--stage));
+    height: calc(100dvh + var(--project-count, 3) * var(--stage));
+  }
+
+  /*
+   * Listing handoff: swap at morph start with project 3 already at its
+   * featured end size (65.5vw × 64.9dvh photo), then resize — no fade.
+   */
+  .featured-layer {
+    height: 100%;
+    overflow: hidden;
+    opacity: calc(1 - clamp(0, var(--listing-morph) / 0.02, 1));
+    pointer-events: auto;
+  }
+
+  .hero-stage[data-phase="listing"] .featured-layer {
+    pointer-events: none;
+  }
+
+  .listing-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 16;
+    display: flex;
+    pointer-events: none;
+    opacity: clamp(0, var(--listing-morph) / 0.02, 1);
+    background: #f0efeb;
+  }
+
+  .hero-stage[data-phase="listing"] .listing-layer {
+    pointer-events: auto;
+  }
+
+  /* Column starts at featured project-3 width, settles to ~36% */
+  .listing-stack {
+    position: relative;
+    width: calc(
+      65.5vw * (1 - var(--listing-morph)) + 36% * var(--listing-morph)
+    );
+    height: 100%;
+    overflow: hidden;
+    background: #0a0a0c;
+    will-change: width;
+  }
+
+  .listing-stack__track {
+    display: flex;
+    flex-direction: column;
+    will-change: transform;
+    /* After morph, further scroll moves the equal strips upward */
+    transform: translate3d(
+      0,
+      calc(var(--listing-step) * (-100dvh / 3)),
+      0
+    );
+  }
+
+  .listing-frame {
+    position: relative;
+    flex: none;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  /*
+   * Project 3: continue from featured photo size (64.9dvh) → strip.
+   * Following projects: grow in from below to the same strip size.
+   */
+  .listing-frame:first-child {
+    height: calc(
+      64.9dvh * (1 - var(--listing-morph)) + (100dvh / 3) * var(--listing-morph)
+    );
+  }
+
+  .listing-frame:not(:first-child):not(.listing-cta) {
+    height: calc(var(--listing-morph) * (100dvh / 3));
+  }
+
+  /* CTA only after the project strips — same strip height, not during morph-in */
+  .listing-frame.listing-cta {
+    height: calc(var(--listing-morph) * (100dvh / 3));
+  }
+
+  .listing-frame.listing-cta .listing-cta__button {
+    font-size: clamp(0.72rem, 0.95vw, 0.82rem);
+  }
+
+  .listing-frame__photo {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    appearance: none;
+  }
+
+  .listing-frame__photo::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: rgba(0, 0, 0, 0.28);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+  }
+
+  .listing-frame__photo:hover::after,
+  .listing-frame__photo:focus-visible::after {
+    opacity: 1;
+  }
+
+  .listing-frame__chrome {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    color: #fff;
+    pointer-events: none;
+  }
+
+  .listing-frame__meta {
+    position: absolute;
+    top: 1.15rem;
+    right: 1.15rem;
+    left: 1.15rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .listing-frame__clip {
+    display: block;
+    overflow: hidden;
+  }
+
+  .listing-frame__clip--top {
+    max-width: 55%;
+  }
+
+  .listing-frame__clip--top:last-child {
+    max-width: none;
+  }
+
+  .listing-frame__clip--title {
+    position: absolute;
+    bottom: 1.2rem;
+    left: 1.15rem;
+    max-width: calc(100% - 5.5rem);
+  }
+
+  .listing-frame__clip--arrow {
+    position: absolute;
+    right: 1.15rem;
+    bottom: 1.1rem;
+    /* Room for hover scale so the circle isn't clipped */
+    width: calc(2.55rem * 1.15);
+    height: calc(2.55rem * 1.15);
+  }
+
+  .listing-frame__rise {
+    display: block;
+    transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+  }
+
+  .listing-frame__rise--top {
+    transform: translate3d(0, -110%, 0);
+  }
+
+  .listing-frame__rise--bottom {
+    transform: translate3d(0, 110%, 0);
+  }
+
+  .listing-frame__photo:hover .listing-frame__rise--top,
+  .listing-frame__photo:focus-visible .listing-frame__rise--top,
+  .listing-frame__photo:hover .listing-frame__rise--bottom,
+  .listing-frame__photo:focus-visible .listing-frame__rise--bottom {
+    transform: translate3d(0, 0, 0);
+  }
+
+  .listing-frame__clip--top:first-child .listing-frame__rise--top {
+    transition-delay: 0.02s;
+  }
+
+  .listing-frame__clip--top:last-child .listing-frame__rise--top {
+    transition-delay: 0.08s;
+  }
+
+  .listing-frame__clip--title .listing-frame__rise--bottom {
+    transition-delay: 0.04s;
+  }
+
+  .listing-frame__clip--arrow .listing-frame__rise--bottom {
+    transition-delay: 0.1s;
+  }
+
+  .listing-frame__tag {
+    text-align: left;
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .listing-frame__year {
+    display: inline-flex;
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 999px;
+    padding: 0.3rem 0.75rem;
+    font-size: 0.72rem;
+    line-height: 1;
+  }
+
+  .listing-frame__title {
+    margin: 0;
+    font-size: clamp(1.55rem, 2.2vw, 2.15rem);
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    line-height: 1;
+  }
+
+  .listing-frame__arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Outline first; after rise-in, blue fill + arrow-in like featured projects */
+  .listing-frame__circle.project-arrow {
+    width: 2.55rem;
+    height: 2.55rem;
+    border-color: #fff;
+    color: #fff;
+    background: transparent;
+    transform: none;
+  }
+
+  .listing-frame__circle.project-arrow .project-arrow__svg {
+    width: 1.05rem;
+    height: 1.05rem;
+  }
+
+  .listing-frame__circle .project-arrow__fill {
+    transition-delay: 0s;
+  }
+
+  .listing-frame__photo:hover .listing-frame__circle.project-arrow,
+  .listing-frame__photo:focus-visible .listing-frame__circle.project-arrow {
+    border-color: #3858e9;
+    color: #fff;
+    transform: scale(1.15);
+    transition-delay: 0.35s;
+  }
+
+  .listing-frame__photo:hover .listing-frame__circle .project-arrow__fill,
+  .listing-frame__photo:focus-visible .listing-frame__circle .project-arrow__fill {
+    transform: translate(-50%, -50%) scale(1);
+    transition-delay: 0.35s;
+  }
+
+  .listing-frame__photo:hover .listing-frame__circle .project-arrow__icon,
+  .listing-frame__photo:focus-visible .listing-frame__circle .project-arrow__icon {
+    animation: project-arrow-in 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both;
+  }
+
+  .listing-rail {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    flex-direction: column;
+    padding: 6.5rem 4.5vw 3rem;
+    opacity: clamp(0, (var(--listing-morph) - 0.22) / 0.78, 1);
+    transform: translate3d(calc((1 - var(--listing-morph)) * 2.5rem), 0, 0);
+    overflow: hidden;
+  }
+
+  .listing-rail__title {
+    margin: 0;
+    font-size: clamp(3rem, 5.5vw, 5rem);
+    font-weight: 500;
+    letter-spacing: -0.045em;
+    line-height: 0.95;
+  }
+
+  .listing-rail__list {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .listing-rail__item {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    gap: 1rem;
+    align-items: baseline;
+    border-top: 1px solid rgba(10, 10, 12, 0.14);
+    padding: 1.05rem 0;
+  }
+
+  .listing-rail__item:last-child {
+    border-bottom: 1px solid rgba(10, 10, 12, 0.14);
+  }
+
+  .listing-rail__id {
+    font-size: 0.78rem;
+    opacity: 0.45;
+  }
+
+  .listing-rail__label {
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .listing-rail__blurb {
+    max-width: 34rem;
+    margin: 0;
+    font-size: clamp(1rem, 1.15vw, 1.2rem);
+    line-height: 1.45;
+    opacity: 0.82;
   }
 
   .hero-stage[data-layout="simple"] .projects-row {
@@ -750,11 +1152,13 @@ html[data-booting="true"] .boot-home .hero-stage {
   }
 
   .project-3 {
+    /* Featured end (65.5vw) → listing strip (36%) once morph starts */
     width: calc(
       (
           (10.55 + (34.5 - 10.55) * var(--intro)) * (1 - var(--s2)) + 65.5 *
             var(--s2)
-        ) * 1vw
+        ) *
+        1vw * (1 - var(--listing-morph)) + 36% * var(--listing-morph)
     );
   }
 
@@ -776,7 +1180,11 @@ html[data-booting="true"] .boot-home .hero-stage {
 
   .project-3 .project-photo {
     top: 0;
-    height: calc(64.9% * var(--s2));
+    /* Featured photo (64.9dvh) → strip height — same curve as listing frame */
+    height: calc(
+      64.9dvh * var(--s2) * (1 - var(--listing-morph)) + (100dvh / 3) *
+        var(--listing-morph)
+    );
   }
 
   .brand-lockup,
@@ -790,9 +1198,12 @@ html[data-booting="true"] .boot-home .hero-stage {
   }
 
   .project-1 .project-details,
-  .project-2 .project-details,
-  .project-3 .project-details {
+  .project-2 .project-details {
     opacity: 1;
+  }
+
+  .project-3 .project-details {
+    opacity: calc(1 - var(--listing-morph));
   }
 
   .project-1 .project-rise,

@@ -27,6 +27,20 @@ export type Project = {
   media: string;
 };
 
+export type ListingItem = {
+  id: string;
+  label: string;
+  labelEn: string;
+};
+
+export type ListingContent = {
+  title: string;
+  titleEn: string;
+  blurb: string;
+  blurbEn: string;
+  items: ListingItem[];
+};
+
 export type SiteContent = {
   brand: {
     name: string;
@@ -36,6 +50,7 @@ export type SiteContent = {
   };
   menu: MenuItem[];
   socials: SocialLink[];
+  listing: ListingContent;
   projects: Project[];
 };
 
@@ -63,6 +78,11 @@ export function isValidSiteContent(value: unknown): value is SiteContent {
     typeof data.brand?.description === "string" &&
     Array.isArray(data.menu) &&
     Array.isArray(data.socials) &&
+    typeof data.listing?.title === "string" &&
+    typeof data.listing?.titleEn === "string" &&
+    typeof data.listing?.blurb === "string" &&
+    typeof data.listing?.blurbEn === "string" &&
+    Array.isArray(data.listing?.items) &&
     Array.isArray(data.projects)
   );
 }
