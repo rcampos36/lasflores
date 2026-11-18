@@ -62,3 +62,59 @@ export function listingItemLabel(
 ) {
   return locale === "en" ? item.labelEn : item.label;
 }
+
+export function expertisesTitle(
+  expertises: { title: string; titleEn: string },
+  locale: Locale,
+) {
+  return locale === "en" ? expertises.titleEn : expertises.title;
+}
+
+export function expertisesCta(
+  expertises: { cta: string; ctaEn: string },
+  locale: Locale,
+) {
+  return locale === "en" ? expertises.ctaEn : expertises.cta;
+}
+
+export function expertiseItemTitle(
+  item: { title: string; titleEn: string },
+  locale: Locale,
+) {
+  return locale === "en" ? item.titleEn : item.title;
+}
+
+export function expertiseItemServices(
+  item: { services: string[]; servicesEn: string[] },
+  locale: Locale,
+) {
+  return locale === "en" ? item.servicesEn : item.services;
+}
+
+export function expertiseImageAlt(
+  item: { imageAlt: string; imageAltEn: string },
+  locale: Locale,
+) {
+  return locale === "en" ? item.imageAltEn : item.imageAlt;
+}
+
+export function closingHeadline(
+  closing: { headline: string; headlineEn: string },
+  locale: Locale,
+) {
+  return locale === "en" ? closing.headlineEn : closing.headline;
+}
+
+export function closingCta(
+  closing: { cta: string; ctaEn: string },
+  locale: Locale,
+) {
+  return locale === "en" ? closing.ctaEn : closing.cta;
+}
+
+export function closingLegal(
+  closing: { legal: string; legalEn: string },
+  locale: Locale,
+) {
+  return locale === "en" ? closing.legalEn : closing.legal;
+}

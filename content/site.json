@@ -258,5 +258,157 @@
       "color": "#e19269",
       "media": "#e19269"
     }
-  ]
+  ],
+  "expertises": {
+    "title": "Especialidades",
+    "titleEn": "Expertises",
+    "cta": "Ver la especialidad",
+    "ctaEn": "See the expertise",
+    "items": [
+      {
+        "id": "01",
+        "title": "Estrategia y consultoría",
+        "titleEn": "Strategy & Consulting",
+        "services": [
+          "Auditoría y benchmark",
+          "Posicionamiento",
+          "Imagen de marca",
+          "Estrategia digital",
+          "Estrategia editorial",
+          "Acompañamiento"
+        ],
+        "servicesEn": [
+          "Audit & Benchmark",
+          "Positioning",
+          "Brand Image",
+          "Digital Strategy",
+          "Editorial Strategy",
+          "Accompaniment"
+        ],
+        "color": "#c5cdd0",
+        "image": "/uploads/expertise-01.jpg",
+        "imageAlt": "Persona en ropa deportiva sentada en escaleras blancas",
+        "imageAltEn": "Person in athletic wear sitting on white stairs"
+      },
+      {
+        "id": "02",
+        "title": "Identidad y marca",
+        "titleEn": "Identity & Brand",
+        "services": [
+          "Naming y storytelling",
+          "Dirección artística",
+          "Sistema visual",
+          "Manual de marca",
+          "Papelería y assets",
+          "Guía de tono"
+        ],
+        "servicesEn": [
+          "Naming & storytelling",
+          "Art direction",
+          "Visual system",
+          "Brand guidelines",
+          "Stationery & assets",
+          "Tone of voice"
+        ],
+        "color": "#b1939d",
+        "image": "/uploads/expertise-02.jpg",
+        "imageAlt": "Retrato en primer plano con luz suave",
+        "imageAltEn": "Close-up portrait with soft light"
+      },
+      {
+        "id": "03",
+        "title": "Diseño digital",
+        "titleEn": "Digital Design",
+        "services": [
+          "UX research",
+          "UI design",
+          "Prototipos",
+          "Design systems",
+          "Accesibilidad",
+          "Motion design"
+        ],
+        "servicesEn": [
+          "UX research",
+          "UI design",
+          "Prototyping",
+          "Design systems",
+          "Accessibility",
+          "Motion design"
+        ],
+        "color": "#7d877c",
+        "image": "/uploads/expertise-03.jpg",
+        "imageAlt": "Detalle de producto en color naranja",
+        "imageAltEn": "Orange product detail shot"
+      },
+      {
+        "id": "04",
+        "title": "Desarrollo web",
+        "titleEn": "Web Development",
+        "services": [
+          "Sitios a medida",
+          "E-commerce",
+          "CMS headless",
+          "Rendimiento",
+          "Integraciones",
+          "Mantenimiento"
+        ],
+        "servicesEn": [
+          "Custom websites",
+          "E-commerce",
+          "Headless CMS",
+          "Performance",
+          "Integrations",
+          "Maintenance"
+        ],
+        "color": "#bfcbd9",
+        "image": "/uploads/expertise-04.jpg",
+        "imageAlt": "Composición abstracta de formas y color",
+        "imageAltEn": "Abstract composition of shapes and color"
+      },
+      {
+        "id": "05",
+        "title": "Contenido y campañas",
+        "titleEn": "Content & Campaigns",
+        "services": [
+          "Dirección creativa",
+          "Producción fotográfica",
+          "Social content",
+          "Campañas de lanzamiento",
+          "Copywriting",
+          "Producción vídeo"
+        ],
+        "servicesEn": [
+          "Creative direction",
+          "Photo production",
+          "Social content",
+          "Launch campaigns",
+          "Copywriting",
+          "Video production"
+        ],
+        "color": "#e19269",
+        "image": "/uploads/expertise-05.jpg",
+        "imageAlt": "Espacio de trabajo con analítica en pantalla",
+        "imageAltEn": "Workspace with analytics on screen"
+      }
+    ]
+  },
+  "closing": {
+    "headline": "Te retamos\na que\nnos retes.",
+    "headlineEn": "We challenge you\nto\nchallenge us.",
+    "cta": "Contáctanos",
+    "ctaEn": "Contact us",
+    "ctaHref": "mailto:hola@lasflores.studio",
+    "address": [
+      "Las Flores",
+      "Av. Álvaro Obregón 123",
+      "Roma Norte, CDMX",
+      "México"
+    ],
+    "emails": ["hola@lasflores.studio", "trabajo@lasflores.studio"],
+    "phone": "+52 55 1234 5678",
+    "legal": "Aviso legal",
+    "legalEn": "Legal notice",
+    "legalHref": "#",
+    "copyright": "Las Flores© 2026"
+  }
 }

@@ -41,6 +41,41 @@ export type ListingContent = {
   items: ListingItem[];
 };
 
+export type ExpertiseItem = {
+  id: string;
+  title: string;
+  titleEn: string;
+  services: string[];
+  servicesEn: string[];
+  color: string;
+  image: string | null;
+  imageAlt: string;
+  imageAltEn: string;
+};
+
+export type ExpertisesContent = {
+  title: string;
+  titleEn: string;
+  cta: string;
+  ctaEn: string;
+  items: ExpertiseItem[];
+};
+
+export type ClosingContent = {
+  headline: string;
+  headlineEn: string;
+  cta: string;
+  ctaEn: string;
+  ctaHref: string;
+  address: string[];
+  emails: string[];
+  phone: string;
+  legal: string;
+  legalEn: string;
+  legalHref: string;
+  copyright: string;
+};
+
 export type SiteContent = {
   brand: {
     name: string;
@@ -52,6 +87,8 @@ export type SiteContent = {
   socials: SocialLink[];
   listing: ListingContent;
   projects: Project[];
+  expertises?: ExpertisesContent;
+  closing?: ClosingContent;
 };
 
 const contentPath = path.join(process.cwd(), "content", "site.json");
@@ -83,6 +120,25 @@ export function isValidSiteContent(value: unknown): value is SiteContent {
     typeof data.listing?.blurb === "string" &&
     typeof data.listing?.blurbEn === "string" &&
     Array.isArray(data.listing?.items) &&
-    Array.isArray(data.projects)
+    Array.isArray(data.projects) &&
+    (data.expertises === undefined ||
+      (typeof data.expertises?.title === "string" &&
+        typeof data.expertises?.titleEn === "string" &&
+        typeof data.expertises?.cta === "string" &&
+        typeof data.expertises?.ctaEn === "string" &&
+        Array.isArray(data.expertises?.items))) &&
+    (data.closing === undefined ||
+      (typeof data.closing?.headline === "string" &&
+        typeof data.closing?.headlineEn === "string" &&
+        typeof data.closing?.cta === "string" &&
+        typeof data.closing?.ctaEn === "string" &&
+        typeof data.closing?.ctaHref === "string" &&
+        Array.isArray(data.closing?.address) &&
+        Array.isArray(data.closing?.emails) &&
+        typeof data.closing?.phone === "string" &&
+        typeof data.closing?.legal === "string" &&
+        typeof data.closing?.legalEn === "string" &&
+        typeof data.closing?.legalHref === "string" &&
+        typeof data.closing?.copyright === "string"))
   );
 }

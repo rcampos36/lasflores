@@ -18,7 +18,9 @@ export function LanguageToggle({ className = "" }: LanguageToggleProps) {
       <button
         type="button"
         className={`transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#3858E9] ${
-          locale === "es" ? "text-[#3858E9] opacity-100" : "opacity-35 hover:opacity-70"
+          locale === "es"
+            ? "text-[#3858E9] opacity-100"
+            : "opacity-35 hover:opacity-70"
         }`}
         aria-pressed={locale === "es"}
         onClick={() => setLocale("es")}
@@ -31,7 +33,9 @@ export function LanguageToggle({ className = "" }: LanguageToggleProps) {
       <button
         type="button"
         className={`transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#3858E9] ${
-          locale === "en" ? "text-[#3858E9] opacity-100" : "opacity-35 hover:opacity-70"
+          locale === "en"
+            ? "text-[#3858E9] opacity-100"
+            : "opacity-35 hover:opacity-70"
         }`}
         aria-pressed={locale === "en"}
         onClick={() => setLocale("en")}
