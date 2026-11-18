@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import {
   useCallback,
   useEffect,
@@ -26,9 +27,12 @@ import {
   listingItemLabel,
   listingTitle,
   menuLabel,
+  projectCta,
   projectImageAlt,
+  projectPath,
   projectTags,
 } from "@/lib/i18n";
+import { armProjectBoot } from "@/lib/project-boot";
 
 function ArrowIcon() {
   return (
@@ -174,16 +178,20 @@ function ProjectCard({
   featured,
   onNext,
   priority,
+  brand,
 }: {
   project: Project;
   index: number;
   featured: boolean;
   onNext: () => void;
   priority?: boolean;
+  brand: { name: string; tagline: string };
 }) {
   const { locale, copy } = useLocale();
   const tags = projectTags(project, locale);
   const imageAlt = projectImageAlt(project, locale);
+  const href = projectPath(project);
+  const openLabel = projectCta(project, locale);
 
   return (
     <article
@@ -191,12 +199,12 @@ function ProjectCard({
       style={{ backgroundColor: project.color }}
       aria-labelledby={`project-${project.id}`}
     >
-      <button
-        type="button"
+      <Link
+        href={href}
         className="project-photo"
         style={{ backgroundColor: project.media }}
-        onClick={onNext}
-        aria-label={copy.nextProject(project.title)}
+        aria-label={`${openLabel}: ${project.title}`}
+        onClick={() => armProjectBoot(brand)}
       >
         {project.image ? (
           <Image
@@ -208,7 +216,7 @@ function ProjectCard({
             className="pointer-events-none object-cover object-[center_42%]"
           />
         ) : null}
-      </button>
+      </Link>
 
       <div className="project-details absolute inset-x-0 top-[58%] bottom-0 lg:top-[64.9%]">
         <div className="project-meta relative mx-[1.35rem] mt-[1.4rem] lg:mx-[1.7rem] lg:mt-[1.5rem]">
@@ -800,6 +808,7 @@ function HeroScrollInner({ content }: HeroScrollProps) {
                     index={index}
                     featured={classicLayout}
                     priority={index === 0}
+                    brand={brand}
                     onNext={() =>
                       scrollToUnit(
                         Math.min(
@@ -818,6 +827,7 @@ function HeroScrollInner({ content }: HeroScrollProps) {
                       project={project}
                       index={index}
                       featured={false}
+                      brand={brand}
                       onNext={() => {
                         const next =
                           mobileExtraProjects[
@@ -852,6 +862,8 @@ function HeroScrollInner({ content }: HeroScrollProps) {
                       const tags = projectTags(project, locale);
                       const imageAlt = projectImageAlt(project, locale);
                       const isActive = index === activeListing;
+                      const href = projectPath(project);
+                      const openLabel = projectCta(project, locale);
 
                       return (
                         <article
@@ -860,19 +872,13 @@ function HeroScrollInner({ content }: HeroScrollProps) {
                           data-active={isActive ? "true" : "false"}
                           style={{ backgroundColor: project.color }}
                         >
-                          <button
-                            type="button"
+                          <Link
+                            href={href}
                             className="listing-frame__photo"
                             style={{ backgroundColor: project.media }}
-                            onClick={() =>
-                              scrollToUnit(
-                                FEATURED_UNITS +
-                                  1 +
-                                  Math.min(index, stackScrollUnits),
-                              )
-                            }
-                            aria-label={copy.nextProject(project.title)}
+                            aria-label={`${openLabel}: ${project.title}`}
                             tabIndex={isActive ? 0 : -1}
+                            onClick={() => armProjectBoot(brand)}
                           >
                             {project.image ? (
                               <Image
@@ -915,7 +921,7 @@ function HeroScrollInner({ content }: HeroScrollProps) {
                                 </span>
                               </span>
                             </div>
-                          </button>
+                          </Link>
                         </article>
                       );
                     })}

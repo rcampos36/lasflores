@@ -94,7 +94,11 @@
       "imageAlt": "Casa contemporánea de piedra y vidrio al atardecer",
       "imageAltEn": "Contemporary stone and glass house at dusk",
       "color": "#bfcbd9",
-      "media": "#bfcbd9"
+      "media": "#bfcbd9",
+      "slug": "archidomo",
+      "cta": "Ver el proyecto",
+      "ctaEn": "View the project",
+      "ctaHref": "#"
     },
     {
       "id": "02",
@@ -112,7 +116,11 @@
       "imageAlt": "Persona sentada entre esculturas de colores",
       "imageAltEn": "Person sitting among colorful sculptures",
       "color": "#b692a0",
-      "media": "#b692a0"
+      "media": "#b692a0",
+      "slug": "atelier",
+      "cta": "Ver el proyecto",
+      "ctaEn": "View the project",
+      "ctaHref": "#"
     },
     {
       "id": "03",
@@ -130,7 +138,11 @@
       "imageAlt": "Paisaje natural con vegetación",
       "imageAltEn": "Natural landscape with vegetation",
       "color": "#798e7b",
-      "media": "#6a8272"
+      "media": "#6a8272",
+      "slug": "verde",
+      "cta": "Ver el proyecto",
+      "ctaEn": "View the project",
+      "ctaHref": "#"
     },
     {
       "id": "04",
@@ -148,7 +160,11 @@
       "imageAlt": "Interior luminoso de vivienda contemporánea",
       "imageAltEn": "Bright contemporary home interior",
       "color": "#c5cdd0",
-      "media": "#c5cdd0"
+      "media": "#c5cdd0",
+      "slug": "nova",
+      "cta": "Ver el proyecto",
+      "ctaEn": "View the project",
+      "ctaHref": "#"
     },
     {
       "id": "05",
@@ -166,7 +182,11 @@
       "imageAlt": "Apartamento con luz natural y mobiliario",
       "imageAltEn": "Apartment with natural light and furniture",
       "color": "#e19269",
-      "media": "#e19269"
+      "media": "#e19269",
+      "slug": "lumen",
+      "cta": "Ver el proyecto",
+      "ctaEn": "View the project",
+      "ctaHref": "#"
     },
     {
       "id": "06",
@@ -184,7 +204,11 @@
       "imageAlt": "Casa moderna con piscina al atardecer",
       "imageAltEn": "Modern house with pool at dusk",
       "color": "#bfcbd9",
-      "media": "#bfcbd9"
+      "media": "#bfcbd9",
+      "slug": "sanctuary",
+      "cta": "Ver el proyecto",
+      "ctaEn": "View the project",
+      "ctaHref": "#"
     },
     {
       "id": "07",
@@ -202,7 +226,11 @@
       "imageAlt": "Loft urbano con grandes ventanales",
       "imageAltEn": "Urban loft with large windows",
       "color": "#b692a0",
-      "media": "#b692a0"
+      "media": "#b692a0",
+      "slug": "orbit",
+      "cta": "Ver el proyecto",
+      "ctaEn": "View the project",
+      "ctaHref": "#"
     },
     {
       "id": "08",
@@ -220,7 +248,11 @@
       "imageAlt": "Cocina abierta de diseño residencial",
       "imageAltEn": "Open residential kitchen design",
       "color": "#798e7b",
-      "media": "#798e7b"
+      "media": "#798e7b",
+      "slug": "canvas",
+      "cta": "Ver el proyecto",
+      "ctaEn": "View the project",
+      "ctaHref": "#"
     },
     {
       "id": "09",
@@ -238,7 +270,11 @@
       "imageAlt": "Sala de estar minimalista contemporánea",
       "imageAltEn": "Contemporary minimalist living room",
       "color": "#c5cdd0",
-      "media": "#c5cdd0"
+      "media": "#c5cdd0",
+      "slug": "pulse",
+      "cta": "Ver el proyecto",
+      "ctaEn": "View the project",
+      "ctaHref": "#"
     },
     {
       "id": "10",
@@ -256,7 +292,11 @@
       "imageAlt": "Espacio doméstico luminoso y amplio",
       "imageAltEn": "Bright open domestic space",
       "color": "#e19269",
-      "media": "#e19269"
+      "media": "#e19269",
+      "slug": "harbor",
+      "cta": "Ver el proyecto",
+      "ctaEn": "View the project",
+      "ctaHref": "#"
     }
   ],
   "expertises": {

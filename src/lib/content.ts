@@ -25,6 +25,12 @@ export type Project = {
   imageAltEn: string;
   color: string;
   media: string;
+  /** URL segment for /proyectos/[slug] */
+  slug?: string;
+  cta?: string;
+  ctaEn?: string;
+  /** External or in-page link for the detail CTA */
+  ctaHref?: string;
 };
 
 export type ListingItem = {

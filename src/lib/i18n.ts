@@ -42,6 +42,26 @@ export function projectImageAlt(
   return locale === "en" ? project.imageAltEn : project.imageAlt;
 }
 
+export function projectCta(
+  project: { cta?: string; ctaEn?: string },
+  locale: Locale,
+) {
+  if (locale === "en") return project.ctaEn || "View the project";
+  return project.cta || "Ver el proyecto";
+}
+
+export function projectPath(project: { title: string; slug?: string }) {
+  const slug =
+    project.slug?.trim() ||
+    project.title
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "");
+  return `/proyectos/${slug}`;
+}
+
 export function listingTitle(
   listing: { title: string; titleEn: string },
   locale: Locale,

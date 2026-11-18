@@ -27,10 +27,13 @@ export async function generateMetadata(): Promise<Metadata> {
 const bootSplashScript = `
 (function () {
   try {
-    var path = window.location.pathname;
-    if (path !== "/" && path !== "") return;
+    var path = window.location.pathname || "";
+    var isHome = path === "/" || path === "";
+    var isProject = path.indexOf("/proyectos/") === 0;
+    if (!isHome && !isProject) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     document.documentElement.dataset.booting = "true";
+    if (isProject) document.documentElement.dataset.projectBoot = "true";
   } catch (e) {}
 })();
 `;

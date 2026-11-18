@@ -45,6 +45,18 @@ const inputClass =
 const buttonClass =
   "rounded-full border border-black/15 px-4 py-2 text-sm transition-colors hover:bg-black hover:text-white disabled:opacity-50";
 
+const EDITOR_TABS = [
+  { id: "brand", label: "Brand" },
+  { id: "menu", label: "Menu" },
+  { id: "socials", label: "Socials" },
+  { id: "listing", label: "Listing" },
+  { id: "projects", label: "Projects" },
+  { id: "expertises", label: "Expertises" },
+  { id: "closing", label: "Closing" },
+] as const;
+
+type EditorTabId = (typeof EDITOR_TABS)[number]["id"];
+
 function nextProjectId(projects: Project[]) {
   const max = projects.reduce((highest, project) => {
     const value = Number.parseInt(project.id, 10);
@@ -55,8 +67,9 @@ function nextProjectId(projects: Project[]) {
 
 function emptyProject(projects: Project[]): Project {
   const color = PROJECT_COLORS[projects.length % PROJECT_COLORS.length];
+  const id = nextProjectId(projects);
   return {
-    id: nextProjectId(projects),
+    id,
     title: "Nuevo proyecto",
     year: String(new Date().getFullYear()),
     tags: ["Categoría", "Descripción breve"],
@@ -66,6 +79,10 @@ function emptyProject(projects: Project[]): Project {
     imageAltEn: "",
     color,
     media: color,
+    slug: `proyecto-${id}`,
+    cta: "Ver el proyecto",
+    ctaEn: "View the project",
+    ctaHref: "#",
   };
 }
 
@@ -120,6 +137,7 @@ function linesToList(value: string) {
 
 export function ContentEditor({ initialContent }: ContentEditorProps) {
   const [content, setContent] = useState(initialContent);
+  const [activeTab, setActiveTab] = useState<EditorTabId>("brand");
   const [message, setMessage] = useState<string | null>(null);
   const [uploadingKey, setUploadingKey] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
@@ -470,7 +488,37 @@ export function ContentEditor({ initialContent }: ContentEditorProps) {
   }
 
   return (
-    <div className="flex flex-col gap-10">
+    <div className="flex flex-col gap-6">
+      <nav
+        className="sticky top-3 z-20 -mx-1 overflow-x-auto px-1"
+        aria-label="Editor sections"
+      >
+        <div className="flex w-max min-w-full gap-1 rounded-2xl border border-black/10 bg-[#f0efeb]/95 p-1.5 shadow-[0_10px_30px_rgba(0,0,0,0.06)] backdrop-blur">
+          {EDITOR_TABS.map((tab) => {
+            const isActive = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                className={`rounded-full px-3.5 py-2 text-sm whitespace-nowrap transition-colors ${
+                  isActive
+                    ? "bg-[#161616] text-white"
+                    : "text-[#0a0a0c]/70 hover:bg-black/5 hover:text-[#0a0a0c]"
+                }`}
+                aria-pressed={isActive}
+                onClick={() => {
+                  setActiveTab(tab.id);
+                  setMessage(null);
+                }}
+              >
+                {tab.label}
+              </button>
+            );
+          })}
+        </div>
+      </nav>
+
+      {activeTab === "brand" ? (
       <section className="flex flex-col gap-4 rounded-3xl border border-black/8 bg-white/70 p-5 sm:p-6">
         <h2 className="text-lg tracking-[-0.03em]">Brand</h2>
         <div className="grid gap-4 sm:grid-cols-2">
@@ -506,7 +554,9 @@ export function ContentEditor({ initialContent }: ContentEditorProps) {
           </Field>
         </div>
       </section>
+      ) : null}
 
+      {activeTab === "menu" ? (
       <section className="flex flex-col gap-4 rounded-3xl border border-black/8 bg-white/70 p-5 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-lg tracking-[-0.03em]">Menu</h2>
@@ -569,7 +619,9 @@ export function ContentEditor({ initialContent }: ContentEditorProps) {
           ))}
         </div>
       </section>
+      ) : null}
 
+      {activeTab === "socials" ? (
       <section className="flex flex-col gap-4 rounded-3xl border border-black/8 bg-white/70 p-5 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-lg tracking-[-0.03em]">Socials</h2>
@@ -614,7 +666,9 @@ export function ContentEditor({ initialContent }: ContentEditorProps) {
           ))}
         </div>
       </section>
+      ) : null}
 
+      {activeTab === "listing" ? (
       <section className="flex flex-col gap-4 rounded-3xl border border-black/8 bg-white/70 p-5 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-lg tracking-[-0.03em]">Projects listing</h2>
@@ -699,7 +753,9 @@ export function ContentEditor({ initialContent }: ContentEditorProps) {
           ))}
         </div>
       </section>
+      ) : null}
 
+      {activeTab === "projects" ? (
       <section className="flex flex-col gap-4 rounded-3xl border border-black/8 bg-white/70 p-5 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-lg tracking-[-0.03em]">Projects</h2>
@@ -800,6 +856,16 @@ export function ContentEditor({ initialContent }: ContentEditorProps) {
                     }
                   />
                 </Field>
+                <Field label="URL slug">
+                  <input
+                    className={inputClass}
+                    value={project.slug ?? ""}
+                    onChange={(event) =>
+                      updateProject(index, "slug", event.target.value)
+                    }
+                    placeholder="archidomo"
+                  />
+                </Field>
                 <Field label="Year">
                   <input
                     className={inputClass}
@@ -807,6 +873,36 @@ export function ContentEditor({ initialContent }: ContentEditorProps) {
                     onChange={(event) =>
                       updateProject(index, "year", event.target.value)
                     }
+                  />
+                </Field>
+                <Field label="Detail CTA (ES)">
+                  <input
+                    className={inputClass}
+                    value={project.cta ?? ""}
+                    onChange={(event) =>
+                      updateProject(index, "cta", event.target.value)
+                    }
+                    placeholder="Ver el proyecto"
+                  />
+                </Field>
+                <Field label="Detail CTA (EN)">
+                  <input
+                    className={inputClass}
+                    value={project.ctaEn ?? ""}
+                    onChange={(event) =>
+                      updateProject(index, "ctaEn", event.target.value)
+                    }
+                    placeholder="View the project"
+                  />
+                </Field>
+                <Field label="Detail CTA link">
+                  <input
+                    className={inputClass}
+                    value={project.ctaHref ?? ""}
+                    onChange={(event) =>
+                      updateProject(index, "ctaHref", event.target.value)
+                    }
+                    placeholder="https://..."
                   />
                 </Field>
                 <Field label="Image alt (ES)">
@@ -886,7 +982,9 @@ export function ContentEditor({ initialContent }: ContentEditorProps) {
           ))}
         </div>
       </section>
+      ) : null}
 
+      {activeTab === "expertises" ? (
       <section className="flex flex-col gap-4 rounded-3xl border border-black/8 bg-white/70 p-5 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-lg tracking-[-0.03em]">Expertises</h2>
@@ -1101,7 +1199,9 @@ export function ContentEditor({ initialContent }: ContentEditorProps) {
           ))}
         </div>
       </section>
+      ) : null}
 
+      {activeTab === "closing" ? (
       <section className="flex flex-col gap-4 rounded-3xl border border-black/8 bg-white/70 p-5 sm:p-6">
         <h2 className="text-lg tracking-[-0.03em]">Closing / Contact</h2>
         <div className="grid gap-4 sm:grid-cols-2">
@@ -1203,6 +1303,7 @@ export function ContentEditor({ initialContent }: ContentEditorProps) {
           </Field>
         </div>
       </section>
+      ) : null}
 
       <div className="sticky bottom-4 flex flex-wrap items-center gap-3 rounded-2xl border border-black/10 bg-[#f0efeb]/95 p-3 shadow-[0_10px_40px_rgba(0,0,0,0.08)] backdrop-blur">
         <button
