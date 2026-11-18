@@ -1,13 +1,26 @@
 "use client";
 
 import { useRef, useState, useTransition } from "react";
-import type { Project, SiteContent } from "@/lib/content";
+import type {
+  ClosingContent,
+  ExpertiseItem,
+  ExpertisesContent,
+  Project,
+  SiteContent,
+} from "@/lib/content";
 
 type ContentEditorProps = {
   initialContent: SiteContent;
 };
 
 const PROJECT_COLORS = ["#bfcbd9", "#b692a0", "#798e7b", "#c5cdd0", "#e19269"];
+const EXPERTISE_COLORS = [
+  "#c5cdd0",
+  "#b1939d",
+  "#7d877c",
+  "#bfcbd9",
+  "#e19269",
+];
 
 function Field({
   label,
@@ -56,12 +69,63 @@ function emptyProject(projects: Project[]): Project {
   };
 }
 
+function emptyExpertise(items: ExpertiseItem[]): ExpertiseItem {
+  const color = EXPERTISE_COLORS[items.length % EXPERTISE_COLORS.length];
+  return {
+    id: String(items.length + 1).padStart(2, "0"),
+    title: "Nueva especialidad",
+    titleEn: "New expertise",
+    services: ["Servicio 1", "Servicio 2"],
+    servicesEn: ["Service 1", "Service 2"],
+    color,
+    image: null,
+    imageAlt: "",
+    imageAltEn: "",
+  };
+}
+
+function defaultExpertises(): ExpertisesContent {
+  return {
+    title: "Especialidades",
+    titleEn: "Expertises",
+    cta: "Ver la especialidad",
+    ctaEn: "See the expertise",
+    items: [emptyExpertise([])],
+  };
+}
+
+function defaultClosing(): ClosingContent {
+  return {
+    headline: "Te retamos\na que\nnos retes.",
+    headlineEn: "We challenge you\nto\nchallenge us.",
+    cta: "Contáctanos",
+    ctaEn: "Contact us",
+    ctaHref: "mailto:hola@lasflores.studio",
+    address: ["Las Flores", "Ciudad", "País"],
+    emails: ["hola@lasflores.studio"],
+    phone: "",
+    legal: "Aviso legal",
+    legalEn: "Legal notice",
+    legalHref: "#",
+    copyright: "Las Flores© 2026",
+  };
+}
+
+function linesToList(value: string) {
+  return value
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
+}
+
 export function ContentEditor({ initialContent }: ContentEditorProps) {
   const [content, setContent] = useState(initialContent);
   const [message, setMessage] = useState<string | null>(null);
-  const [uploadingIndex, setUploadingIndex] = useState<number | null>(null);
+  const [uploadingKey, setUploadingKey] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
-  const fileInputs = useRef<Record<number, HTMLInputElement | null>>({});
+  const fileInputs = useRef<Record<string, HTMLInputElement | null>>({});
+  const expertises = content.expertises ?? defaultExpertises();
+  const closing = content.closing ?? defaultClosing();
 
   function updateBrand<K extends keyof SiteContent["brand"]>(
     key: K,
@@ -249,9 +313,83 @@ export function ContentEditor({ initialContent }: ContentEditorProps) {
     }));
   }
 
-  async function uploadProjectImage(index: number, file: File) {
+  function ensureExpertises(
+    current: SiteContent,
+    next: ExpertisesContent,
+  ): SiteContent {
+    return { ...current, expertises: next };
+  }
+
+  function updateExpertisesMeta<K extends keyof ExpertisesContent>(
+    key: K,
+    value: ExpertisesContent[K],
+  ) {
+    setContent((current) =>
+      ensureExpertises(current, {
+        ...(current.expertises ?? defaultExpertises()),
+        [key]: value,
+      }),
+    );
+  }
+
+  function updateExpertiseItem(
+    index: number,
+    key: keyof ExpertiseItem,
+    value: string | string[] | null,
+  ) {
+    setContent((current) => {
+      const base = current.expertises ?? defaultExpertises();
+      return ensureExpertises(current, {
+        ...base,
+        items: base.items.map((item, i) =>
+          i === index ? { ...item, [key]: value } : item,
+        ),
+      });
+    });
+  }
+
+  function addExpertiseItem() {
+    setContent((current) => {
+      const base = current.expertises ?? defaultExpertises();
+      return ensureExpertises(current, {
+        ...base,
+        items: [...base.items, emptyExpertise(base.items)],
+      });
+    });
+  }
+
+  function removeExpertiseItem(index: number) {
+    setContent((current) => {
+      const base = current.expertises ?? defaultExpertises();
+      if (base.items.length <= 1) return current;
+      return ensureExpertises(current, {
+        ...base,
+        items: base.items.filter((_, i) => i !== index),
+      });
+    });
+  }
+
+  function clearExpertiseImage(index: number) {
+    updateExpertiseItem(index, "image", null);
+  }
+
+  function updateClosing<K extends keyof ClosingContent>(
+    key: K,
+    value: ClosingContent[K],
+  ) {
+    setContent((current) => ({
+      ...current,
+      closing: { ...(current.closing ?? defaultClosing()), [key]: value },
+    }));
+  }
+
+  async function uploadImage(
+    key: string,
+    file: File,
+    applyUrl: (url: string) => void,
+  ) {
     setMessage(null);
-    setUploadingIndex(index);
+    setUploadingKey(key);
 
     try {
       const body = new FormData();
@@ -267,24 +405,50 @@ export function ContentEditor({ initialContent }: ContentEditorProps) {
         return;
       }
 
+      applyUrl(data.url);
+      setMessage("Image uploaded. Save changes to keep it on the site.");
+    } catch {
+      setMessage("Image upload failed.");
+    } finally {
+      setUploadingKey(null);
+    }
+  }
+
+  async function uploadProjectImage(index: number, file: File) {
+    await uploadImage(`project-${index}`, file, (url) => {
       setContent((current) => ({
         ...current,
         projects: current.projects.map((project, i) =>
           i === index
             ? {
                 ...project,
-                image: data.url!,
+                image: url,
                 imageAlt: project.imageAlt || file.name.replace(/\.[^.]+$/, ""),
               }
             : project,
         ),
       }));
-      setMessage("Image uploaded. Save changes to keep it on the site.");
-    } catch {
-      setMessage("Image upload failed.");
-    } finally {
-      setUploadingIndex(null);
-    }
+    });
+  }
+
+  async function uploadExpertiseImage(index: number, file: File) {
+    await uploadImage(`expertise-${index}`, file, (url) => {
+      setContent((current) => {
+        const base = current.expertises ?? defaultExpertises();
+        return ensureExpertises(current, {
+          ...base,
+          items: base.items.map((item, i) =>
+            i === index
+              ? {
+                  ...item,
+                  image: url,
+                  imageAlt: item.imageAlt || file.name.replace(/\.[^.]+$/, ""),
+                }
+              : item,
+          ),
+        });
+      });
+    });
   }
 
   function save() {
@@ -581,7 +745,7 @@ export function ContentEditor({ initialContent }: ContentEditorProps) {
               <div className="flex flex-wrap gap-2">
                 <input
                   ref={(node) => {
-                    fileInputs.current[index] = node;
+                    fileInputs.current[`project-${index}`] = node;
                   }}
                   type="file"
                   accept="image/jpeg,image/png,image/webp,image/gif,image/avif"
@@ -595,10 +759,12 @@ export function ContentEditor({ initialContent }: ContentEditorProps) {
                 <button
                   type="button"
                   className={buttonClass}
-                  disabled={uploadingIndex === index}
-                  onClick={() => fileInputs.current[index]?.click()}
+                  disabled={uploadingKey === `project-${index}`}
+                  onClick={() =>
+                    fileInputs.current[`project-${index}`]?.click()
+                  }
                 >
-                  {uploadingIndex === index
+                  {uploadingKey === `project-${index}`
                     ? "Uploading..."
                     : project.image
                       ? "Replace image"
@@ -721,11 +887,328 @@ export function ContentEditor({ initialContent }: ContentEditorProps) {
         </div>
       </section>
 
+      <section className="flex flex-col gap-4 rounded-3xl border border-black/8 bg-white/70 p-5 sm:p-6">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2 className="text-lg tracking-[-0.03em]">Expertises</h2>
+          <button
+            type="button"
+            className={buttonClass}
+            onClick={addExpertiseItem}
+          >
+            Add expertise
+          </button>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Field label="Section title (ES)">
+            <input
+              className={inputClass}
+              value={expertises.title}
+              onChange={(event) =>
+                updateExpertisesMeta("title", event.target.value)
+              }
+            />
+          </Field>
+          <Field label="Section title (EN)">
+            <input
+              className={inputClass}
+              value={expertises.titleEn}
+              onChange={(event) =>
+                updateExpertisesMeta("titleEn", event.target.value)
+              }
+            />
+          </Field>
+          <Field label="Panel CTA (ES)">
+            <input
+              className={inputClass}
+              value={expertises.cta}
+              onChange={(event) =>
+                updateExpertisesMeta("cta", event.target.value)
+              }
+            />
+          </Field>
+          <Field label="Panel CTA (EN)">
+            <input
+              className={inputClass}
+              value={expertises.ctaEn}
+              onChange={(event) =>
+                updateExpertisesMeta("ctaEn", event.target.value)
+              }
+            />
+          </Field>
+        </div>
+
+        <div className="flex flex-col gap-5">
+          {expertises.items.map((item, index) => (
+            <div
+              key={`expertise-${index}-${item.id}`}
+              className="flex flex-col gap-4 rounded-2xl border border-black/6 p-4"
+            >
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <p className="text-sm tracking-[0.12em] uppercase opacity-55">
+                  Expertise {item.id}
+                </p>
+                <button
+                  type="button"
+                  className={buttonClass}
+                  onClick={() => removeExpertiseItem(index)}
+                  disabled={expertises.items.length <= 1}
+                >
+                  Remove
+                </button>
+              </div>
+
+              <div className="overflow-hidden rounded-2xl border border-black/8 bg-[#e8e6e0]">
+                {item.image ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={item.image}
+                    alt={item.imageAlt || item.title}
+                    className="h-48 w-full object-cover"
+                  />
+                ) : (
+                  <div className="flex h-48 items-center justify-center text-sm opacity-50">
+                    No image yet
+                  </div>
+                )}
+              </div>
+
+              <div className="flex flex-wrap gap-2">
+                <input
+                  ref={(node) => {
+                    fileInputs.current[`expertise-${index}`] = node;
+                  }}
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,image/gif,image/avif"
+                  className="hidden"
+                  onChange={(event) => {
+                    const file = event.target.files?.[0];
+                    event.target.value = "";
+                    if (file) void uploadExpertiseImage(index, file);
+                  }}
+                />
+                <button
+                  type="button"
+                  className={buttonClass}
+                  disabled={uploadingKey === `expertise-${index}`}
+                  onClick={() =>
+                    fileInputs.current[`expertise-${index}`]?.click()
+                  }
+                >
+                  {uploadingKey === `expertise-${index}`
+                    ? "Uploading..."
+                    : item.image
+                      ? "Replace image"
+                      : "Upload image"}
+                </button>
+                {item.image ? (
+                  <button
+                    type="button"
+                    className={buttonClass}
+                    onClick={() => clearExpertiseImage(index)}
+                  >
+                    Remove image
+                  </button>
+                ) : null}
+              </div>
+
+              <div className="grid gap-3 sm:grid-cols-2">
+                <Field label="ID">
+                  <input
+                    className={inputClass}
+                    value={item.id}
+                    onChange={(event) =>
+                      updateExpertiseItem(index, "id", event.target.value)
+                    }
+                  />
+                </Field>
+                <Field label="Panel color">
+                  <input
+                    className={`${inputClass} font-mono`}
+                    value={item.color}
+                    onChange={(event) =>
+                      updateExpertiseItem(index, "color", event.target.value)
+                    }
+                  />
+                </Field>
+                <Field label="Title (ES)">
+                  <input
+                    className={inputClass}
+                    value={item.title}
+                    onChange={(event) =>
+                      updateExpertiseItem(index, "title", event.target.value)
+                    }
+                  />
+                </Field>
+                <Field label="Title (EN)">
+                  <input
+                    className={inputClass}
+                    value={item.titleEn}
+                    onChange={(event) =>
+                      updateExpertiseItem(index, "titleEn", event.target.value)
+                    }
+                  />
+                </Field>
+                <Field label="Image alt (ES)">
+                  <input
+                    className={inputClass}
+                    value={item.imageAlt}
+                    onChange={(event) =>
+                      updateExpertiseItem(index, "imageAlt", event.target.value)
+                    }
+                  />
+                </Field>
+                <Field label="Image alt (EN)">
+                  <input
+                    className={inputClass}
+                    value={item.imageAltEn}
+                    onChange={(event) =>
+                      updateExpertiseItem(
+                        index,
+                        "imageAltEn",
+                        event.target.value,
+                      )
+                    }
+                  />
+                </Field>
+                <Field label="Services (ES) — one per line">
+                  <textarea
+                    className={`${inputClass} min-h-28 resize-y`}
+                    value={item.services.join("\n")}
+                    onChange={(event) =>
+                      updateExpertiseItem(
+                        index,
+                        "services",
+                        linesToList(event.target.value),
+                      )
+                    }
+                  />
+                </Field>
+                <Field label="Services (EN) — one per line">
+                  <textarea
+                    className={`${inputClass} min-h-28 resize-y`}
+                    value={item.servicesEn.join("\n")}
+                    onChange={(event) =>
+                      updateExpertiseItem(
+                        index,
+                        "servicesEn",
+                        linesToList(event.target.value),
+                      )
+                    }
+                  />
+                </Field>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="flex flex-col gap-4 rounded-3xl border border-black/8 bg-white/70 p-5 sm:p-6">
+        <h2 className="text-lg tracking-[-0.03em]">Closing / Contact</h2>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Field label="Headline (ES) — use line breaks">
+            <textarea
+              className={`${inputClass} min-h-28 resize-y`}
+              value={closing.headline}
+              onChange={(event) =>
+                updateClosing("headline", event.target.value)
+              }
+            />
+          </Field>
+          <Field label="Headline (EN) — use line breaks">
+            <textarea
+              className={`${inputClass} min-h-28 resize-y`}
+              value={closing.headlineEn}
+              onChange={(event) =>
+                updateClosing("headlineEn", event.target.value)
+              }
+            />
+          </Field>
+          <Field label="CTA label (ES)">
+            <input
+              className={inputClass}
+              value={closing.cta}
+              onChange={(event) => updateClosing("cta", event.target.value)}
+            />
+          </Field>
+          <Field label="CTA label (EN)">
+            <input
+              className={inputClass}
+              value={closing.ctaEn}
+              onChange={(event) => updateClosing("ctaEn", event.target.value)}
+            />
+          </Field>
+          <Field label="CTA link">
+            <input
+              className={inputClass}
+              value={closing.ctaHref}
+              onChange={(event) => updateClosing("ctaHref", event.target.value)}
+            />
+          </Field>
+          <Field label="Phone">
+            <input
+              className={inputClass}
+              value={closing.phone}
+              onChange={(event) => updateClosing("phone", event.target.value)}
+            />
+          </Field>
+          <Field label="Address — one line per row">
+            <textarea
+              className={`${inputClass} min-h-28 resize-y`}
+              value={closing.address.join("\n")}
+              onChange={(event) =>
+                updateClosing("address", linesToList(event.target.value))
+              }
+            />
+          </Field>
+          <Field label="Emails — one per line">
+            <textarea
+              className={`${inputClass} min-h-28 resize-y`}
+              value={closing.emails.join("\n")}
+              onChange={(event) =>
+                updateClosing("emails", linesToList(event.target.value))
+              }
+            />
+          </Field>
+          <Field label="Legal label (ES)">
+            <input
+              className={inputClass}
+              value={closing.legal}
+              onChange={(event) => updateClosing("legal", event.target.value)}
+            />
+          </Field>
+          <Field label="Legal label (EN)">
+            <input
+              className={inputClass}
+              value={closing.legalEn}
+              onChange={(event) => updateClosing("legalEn", event.target.value)}
+            />
+          </Field>
+          <Field label="Legal link">
+            <input
+              className={inputClass}
+              value={closing.legalHref}
+              onChange={(event) =>
+                updateClosing("legalHref", event.target.value)
+              }
+            />
+          </Field>
+          <Field label="Copyright">
+            <input
+              className={inputClass}
+              value={closing.copyright}
+              onChange={(event) =>
+                updateClosing("copyright", event.target.value)
+              }
+            />
+          </Field>
+        </div>
+      </section>
+
       <div className="sticky bottom-4 flex flex-wrap items-center gap-3 rounded-2xl border border-black/10 bg-[#f0efeb]/95 p-3 shadow-[0_10px_40px_rgba(0,0,0,0.08)] backdrop-blur">
         <button
           type="button"
           onClick={save}
-          disabled={pending || uploadingIndex !== null}
+          disabled={pending || uploadingKey !== null}
           className="rounded-full bg-[#161616] px-5 py-2.5 text-sm text-white transition-opacity disabled:opacity-50"
         >
           {pending ? "Saving..." : "Save changes"}

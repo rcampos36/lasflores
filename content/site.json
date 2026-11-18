@@ -400,11 +400,13 @@
     "ctaHref": "mailto:hola@lasflores.studio",
     "address": [
       "Las Flores",
-      "Av. Álvaro Obregón 123",
-      "Roma Norte, CDMX",
-      "México"
+      "Playa Las Flores",
+      "El Salvador"
     ],
-    "emails": ["hola@lasflores.studio", "trabajo@lasflores.studio"],
+    "emails": [
+      "hola@lasflores.studio",
+      "trabajo@lasflores.studio"
+    ],
     "phone": "+52 55 1234 5678",
     "legal": "Aviso legal",
     "legalEn": "Legal notice",

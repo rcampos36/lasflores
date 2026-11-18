@@ -14,8 +14,8 @@ export default async function EditPage() {
             </p>
             <h1 className="mt-2 text-3xl tracking-[-0.04em]">Edit site</h1>
             <p className="mt-2 max-w-xl text-sm leading-6 opacity-70">
-              Add or remove projects, upload or replace images, and edit copy.
-              Images go in{" "}
+              Edit brand, menu, socials, projects, expertises, and the closing
+              contact section. Images go in{" "}
               <code className="rounded bg-black/5 px-1.5 py-0.5">
                 public/uploads
               </code>
